@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bondhu - Mental Health Monitoring System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- ===== LOGIN PAGE ===== -->
+    <div id="login-page" class="page">
+        <div class="login-container">
+            <div class="login-box">
+                <div class="logo">
+                    <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
+                        <circle cx="25" cy="25" r="20" stroke="#D946EF" stroke-width="2"/>
+                        <path d="M25 15V35M15 25H35" stroke="#D946EF" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h1>Welcome to <span>Bondhu</span></h1>
+                <p class="tagline">Your friend for mental wellness</p>
+                
+                <div class="role-selector">
+                    <p class="role-label">Sign in as:</p>
+                    <div class="role-buttons">
+                        <button class="role-btn" data-role="patient">PATIENT</button>
+                        <button class="role-btn" data-role="counselor">COUNSELOR</button>
+                        <button class="role-btn" data-role="admin">ADMIN</button>
+                        <button class="role-btn" data-role="pharmacist">PHARMACIST</button>
+                        <button class="role-btn" data-role="finance">FINANCE</button>
+                    </div>
+                </div>
+
+                <form id="login-form" class="login-form">
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <button type="submit" class="login-btn"><span id="login-btn-text">Sign in</span></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN DASHBOARD PAGE ===== -->
+    <div id="dashboard-page" class="page" style="display: none;">
+        <div class="dashboard-container">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <div class="logo-text">
+                        <svg width="30" height="30" viewBox="0 0 50 50" fill="none">
+                            <circle cx="25" cy="25" r="20" stroke="#D946EF" stroke-width="2"/>
+                            <path d="M25 15V35M15 25H35" stroke="#D946EF" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span>Bondhu</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <span id="user-greeting">Welcome, User</span>
+                    <div class="user-avatar">👤</div>
+                    <button id="logout-btn" class="logout-btn">Logout</button>
+                </div>
+            </header>
+
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <nav class="nav-menu">
+                    <!-- PATIENT FEATURES -->
+                    <button class="nav-item active" data-page="dashboard">
+                        <span class="icon">📊</span>
+                        <span>Dashboard</span>
+                    </button>
+                    <button class="nav-item" data-page="daily-log" style="display: none;">
+                        <span class="icon">📝</span>
+                        <span>Daily Log</span>
+                    </button>
+                    <button class="nav-item" data-page="ai-analysis" style="display: none;">
+                        <span class="icon">🤖</span>
+                        <span>AI Analysis & Q&A</span>
+                    </button>
+                    <button class="nav-item" data-page="recommendations" style="display: none;">
+                        <span class="icon">❤️</span>
+                        <span>Recommendations</span>
+                    </button>
+                    <button class="nav-item" data-page="counseling" style="display: none;">
+                        <span class="icon">👨‍⚕️</span>
+                        <span>Counseling</span>
+                    </button>
+                    <button class="nav-item" data-page="progress" style="display: none;">
+                        <span class="icon">📈</span>
+                        <span>Progress</span>
+                    </button>
+                    <button class="nav-item" data-page="pharmacy" style="display: none;">
+                        <span class="icon">💊</span>
+                        <span>Pharmacy</span>
+                    </button>
+                    <button class="nav-item" data-page="crisis-support" style="display: none;">
+                        <span class="icon">⚠️</span>
+                        <span>Crisis Support</span>
+                    </button>
+                    
+                    <!-- ADMIN FEATURES -->
+                    <button class="nav-item" data-page="user-management" style="display: none;">
+                        <span class="icon">👥</span>
+                        <span>User Management</span>
+                    </button>
+                    <button class="nav-item" data-page="manage-counselors" style="display: none;">
+                        <span class="icon">👨‍⚕️</span>
+                        <span>Manage Counselors</span>
+                    </button>
+                    <button class="nav-item" data-page="all-sessions" style="display: none;">
+                        <span class="icon">📅</span>
+                        <span>All Sessions</span>
+                    </button>
+                    <button class="nav-item" data-page="all-daily-logs" style="display: none;">
+                        <span class="icon">📝</span>
+                        <span>All Daily Logs</span>
+                    </button>
+                    <button class="nav-item" data-page="ai-analysis-log" style="display: none;">
+                        <span class="icon">🤖</span>
+                        <span>AI Analysis Log</span>
+                    </button>
+                    <button class="nav-item" data-page="content" style="display: none;">
+                        <span class="icon">📄</span>
+                        <span>Content</span>
+                    </button>
+                    <button class="nav-item" data-page="crisis-log" style="display: none;">
+                        <span class="icon">🚨</span>
+                        <span>Crisis Log</span>
+                    </button>
+
+                    <!-- PHARMACIST FEATURES -->
+                    <button class="nav-item" data-page="prescription-queue" style="display: none;">
+                        <span class="icon">💊</span>
+                        <span>Prescription Queue</span>
+                    </button>
+
+                    <!-- FINANCE FEATURES -->
+                    <button class="nav-item" data-page="billing-dashboard" style="display: none;">
+                        <span class="icon">💳</span>
+                        <span>Billing Dashboard</span>
+                    </button>
+                </nav>
+                <button id="logout-btn-sidebar" class="logout-btn-sidebar" style="display: none;">Logout</button>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="main-content">
+                <!-- DASHBOARD SECTION -->
+                <div id="dashboard" class="content-section active">
+                    <h2>Dashboard</h2>
+                    
+                    <!-- PATIENT DASHBOARD -->
+                    <div id="patient-dashboard">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <p class="stat-label">Avg. Mood (Last 7d)</p>
+                                <p class="stat-value">4.1 / 5</p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="stat-label">Avg. Stress (Last 7d)</p>
+                                <p class="stat-value">2.8 / 5</p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="stat-label">Avg. Sleep (Last 7d)</p>
+                                <p class="stat-value">7.6 hrs</p>
+                            </div>
+                            <div class="stat-card highlight">
+                                <p class="stat-label">AI Wellness Score</p>
+                                <p class="stat-value">82 / 100</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN DASHBOARD -->
+                    <div id="admin-dashboard" style="display: none;">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <p class="stat-label">Total Users</p>
+                                <p class="stat-value">1,254</p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="stat-label">Active Counselors</p>
+                                <p class="stat-value">12</p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="stat-label">Sessions this Week</p>
+                                <p class="stat-value">88</p>
+                            </div>
+                            <div class="stat-card highlight" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%); border-color: #EF4444;">
+                                <p class="stat-label">Crisis Alerts (24h)</p>
+                                <p class="stat-value" style="background: linear-gradient(90deg, #EF4444 0%, #06B6D4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">3</p>
+                            </div>
+                        </div>
+                        <div class="system-health">
+                            <div class="health-card">
+                                <h3>System Health</h3>
+                                <p>All systems operational.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PHARMACIST DASHBOARD -->
+                    <div id="pharmacist-dashboard" style="display: none;">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <p class="stat-label">Pending Prescriptions</p>
+                                <p class="stat-value">24</p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="stat-label">Approved Today</p>
+                                <p class="stat-value">18</p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="stat-label">Out for Delivery</p>
+                                <p class="stat-value">12</p>
+                            </div>
+                            <div class="stat-card highlight">
+                                <p class="stat-label">Delivered</p>
+                                <p class="stat-value">156</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FINANCE DASHBOARD -->
+                    <div id="finance-dashboard" style="display: none;">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <p class="stat-label">Revenue (Month)</p>
+                                <p class="stat-value">$10,560</p>
+                            </div>
+                            <div class="stat-card highlight">
+                                <p class="stat-label">Outstanding Invoices</p>
+                                <p class="stat-value">$1,320</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== PATIENT - DAILY LOG ===== -->
+                <div id="daily-log" class="content-section">
+                    <h2>Daily Log</h2>
+                    <div class="log-form">
+                        <div class="form-section">
+                            <label>How are you feeling today?</label>
+                            <input type="range" min="1" max="5" value="3" class="mood-slider">
+                            <span class="slider-value">😊</span>
+                        </div>
+                        <div class="form-section">
+                            <label>How stressed are you?</label>
+                            <input type="range" min="1" max="5" value="3" class="stress-slider">
+                            <span class="slider-value">3/5</span>
+                        </div>
+                        <div class="form-section">
+                            <label>How many hours did you sleep?</label>
+                            <input type="range" min="0" max="12" value="7" class="sleep-slider">
+                            <span class="slider-value">7 hrs</span>
+                        </div>
+                        <div class="form-section">
+                            <label>Any notes for today?</label>
+                            <textarea placeholder="e.g., Had a great meeting at work..." rows="4"></textarea>
+                        </div>
+                        <button class="save-btn">Save Log</button>
+                    </div>
+                    <div class="log-history">
+                        <div class="table-header">
+                            <div class="table-title">My Log History</div>
+                            <div class="header-controls">
+                                <button class="add-btn">+ Add New</button>
+                                <input type="text" class="search-input" placeholder="Search...">
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>DATE & TIME</th>
+                                    <th>MOOD</th>
+                                    <th>STRESS</th>
+                                    <th>SLEEP (HRS)</th>
+                                    <th>ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2024-11-18 08:00</td>
+                                    <td>4</td>
+                                    <td>2</td>
+                                    <td>8</td>
+                                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ===== PATIENT - AI ANALYSIS ===== -->
+                <div id="ai-analysis" class="content-section">
+                    <h2>AI Analysis & Q&A</h2>
+                    <div class="ai-section">
+                        <div class="ai-insights">
+                            <h3>Your Wellness Insights</h3>
+                            <div class="insight-card">
+                                <p><strong>Mood Pattern:</strong> Your mood has been stable with slight improvement this week.</p>
+                            </div>
+                        </div>
+                        <div class="qa-section">
+                            <h3>Ask AI Assistant</h3>
+                            <input type="text" placeholder="Ask anything about your mental health...">
+                            <button>Send</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== PATIENT - RECOMMENDATIONS ===== -->
+                <div id="recommendations" class="content-section">
+                    <h2>Personalized Recommendations</h2>
+                    <div class="recommendations-grid">
+                        <div class="rec-card">
+                            <h4>Morning Meditation</h4>
+                            <p>Based on your stress levels, try 10-minute meditation every morning.</p>
+                            <button class="start-btn">Start</button>
+                        </div>
+                        <div class="rec-card">
+                            <h4>Exercise Routine</h4>
+                            <p>Regular exercise can improve your mood. Start with 30 minutes, 3x per week.</p>
+                            <button class="start-btn">Start</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== PATIENT - COUNSELING ===== -->
+                <div id="counseling" class="content-section">
+                    <h2>Counseling Sessions</h2>
+                    <div class="counseling-section">
+                        <h3>Book a Session</h3>
+                        <button class="save-btn">Book Session</button>
+                        <h3 style="margin-top: 30px;">My Session History</h3>
+                        <div class="table-header">
+                            <div class="table-title"></div>
+                            <div class="header-controls">
+                                <button class="add-btn">+ Add New</button>
+                                <input type="text" class="search-input" placeholder="Search...">
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>DATE</th>
+                                    <th>COUNSELOR</th>
+                                    <th>DURATION</th>
+                                    <th>STATUS</th>
+                                    <th>ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2024-11-20 10:00</td>
+                                    <td>Dr. Sarah Johnson</td>
+                                    <td>60 min</td>
+                                    <td><span class="status-approved">Completed</span></td>
+                                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ===== PATIENT - PROGRESS ===== -->
+                <div id="progress" class="content-section">
+                    <h2>Progress Tracking</h2>
+                    <h3>Progress Metrics</h3>
+                    <div class="table-header">
+                        <div class="table-title"></div>
+                        <div class="header-controls">
+                            <button class="add-btn">+ Add New</button>
+                            <input type="text" class="search-input" placeholder="Search...">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>DATE</th>
+                                <th>STABILITY</th>
+                                <th>SCORE</th>
+                                <th>TREND</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-11-18</td>
+                                <td>Stable</td>
+                                <td>82/100</td>
+                                <td>📈 Improving</td>
+                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ===== PATIENT - PHARMACY ===== -->
+                <div id="pharmacy" class="content-section">
+                    <h2>Pharmacy Services</h2>
+                    <h3>Your Medications</h3>
+                    <div class="med-card">
+                        <h4>Sertraline</h4>
+                        <p>50mg - Twice daily</p>
+                    </div>
+                    <h3 style="margin-top: 30px;">Prescription Requests</h3>
+                    <button class="save-btn">Request Refill</button>
+                </div>
+
+                <!-- ===== PATIENT - CRISIS SUPPORT ===== -->
+                <div id="crisis-support" class="content-section">
+                    <h2>Crisis Support</h2>
+                    <div class="helpline-card">
+                        <p><strong>National Crisis Hotline:</strong></p>
+                        <p class="phone">1-800-273-8255</p>
+                    </div>
+                    <button class="crisis-btn">Connect with Counselor</button>
+                </div>
+
+                <!-- ===== ADMIN - USER MANAGEMENT ===== -->
+                <div id="user-management" class="content-section">
+                    <h2>User Management</h2>
+                    <div class="table-header">
+                        <div class="table-title"></div>
+                        <div class="header-controls">
+                            <button class="add-btn">+ Add New</button>
+                            <input type="text" class="search-input" placeholder="Search...">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>NAME</th>
+                                <th>EMAIL</th>
+                                <th>ROLE</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>john@bondhu.app</td>
+                                <td>Patient</td>
+                                <td><span class="status-approved">Active</span></td>
+                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ===== ADMIN - MANAGE COUNSELORS ===== -->
+                <div id="manage-counselors" class="content-section">
+                    <h2>Manage Counselors</h2>
+                    <div class="table-header">
+                        <div class="table-title"></div>
+                        <div class="header-controls">
+                            <button class="add-btn">+ Add New</button>
+                            <input type="text" class="search-input" placeholder="Search...">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>NAME</th>
+                                <th>SPECIALIZATION</th>
+                                <th>ACTIVE PATIENTS</th>
+                                <th>SESSIONS/WEEK</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Dr. Sarah Johnson</td>
+                                <td>Anxiety & Stress</td>
+                                <td>8</td>
+                                <td>12</td>
+                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ===== ADMIN - ALL SESSIONS ===== -->
+                <div id="all-sessions" class="content-section">
+                    <h2>All Sessions</h2>
+                    <div class="table-header">
+                        <div class="table-title"></div>
+                        <div class="header-controls">
+                            <button class="add-btn">+ Add New</button>
+                            <input type="text" class="search-input" placeholder="Search...">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>DATE</th>
+                                <th>PATIENT</th>
+                                <th>COUNSELOR</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-11-20 10:00</td>
+                                <td>Patient User</td>
+                                <td>Dr. Sarah Johnson</td>
+                                <td><span class="status-approved">Completed</span></td>
+                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ===== ADMIN - ALL DAILY LOGS ===== -->
+                <div id="all-daily-logs" class="content-section">
+                    <h2>All Daily Logs</h2>
+                    <div class="table-header">
+                        <div class="table-title"></div>
+                        <div class="header-controls">
+                            <button class="add-btn">+ Add New</button>
+                            <input type="text" class="search-input" placeholder="Search...">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>DATE</th>
+                                <th>PATIENT</th>
+                                <th>MOOD</th>
+                                <th>STRESS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-11-18 08:00</td>
+                                <td>Patient User</td>
+                                <td>4</td>
+                                <td>2</td>
+                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ===== ADMIN - AI ANALYSIS LOG ===== -->
+                <div id="ai-analysis-log" class="content-section">
+                    <h2>AI Analysis Log</h2>
+                    <div class="table-header">
+                        <div class="table-title"></div>
+                        <div class="header-controls">
+                            <button class="add-btn">+ Add New</button>
+                            <input type="text" class="search-input" placeholder="Search...">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>DATE</th>
+                                <th>PATIENT</th>
+                                <th>ANALYSIS TYPE</th>
+                                <th>SCORE</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-11-18 09:30</td>
+                                <td>Patient User</td>
+                                <td>Mood Pattern Analysis</td>
+                                <td>82/100</td>
+                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ===== ADMIN - CONTENT ===== -->
+                <div id="content" class="content-section">
+                    <h2>Content Management</h2>
+                    <div class="table-header">
+                        <div class="table-title"></div>
+                        <div class="header-controls">
+                            <button class="add-btn">+ Add New</button>
+                            <input type="text" class="search-input" placeholder="Search...">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>TITLE</th>
+                                <th>TYPE</th>
+                                <th>CREATED</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Stress Management Guide</td>
+                                <td>Article</td>
+                                <td>2024-11-15</td>
+                                <td><span class="status-approved">Published</span></td>
+                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ===== ADMIN - CRISIS LOG ===== -->
+                <div id="crisis-log" class="content-section">
+                    <h2>Crisis Log</h2>
+                    <div class="table-header">
+                        <div class="table-title"></div>
+                        <div class="header-controls">
+                            <button class="add-btn">+ Add New</button>
+                            <input type="text" class="search-input" placeholder="Search...">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>DATE</th>
+                                <th>PATIENT</th>
+                                <th>SEVERITY</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-11-18 15:45</td>
+                                <td>Patient User</td>
+                                <td>Medium</td>
+                                <td><span class="status-approved">Resolved</span></td>
+                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ===== PHARMACIST - PRESCRIPTION QUEUE ===== -->
+                <div id="prescription-queue" class="content-section">
+                    <h2>Prescription Queue</h2>
+                    <div class="table-header">
+                        <div class="table-title"></div>
+                        <div class="header-controls">
+                            <button class="add-btn">+ Add New</button>
+                            <input type="text" class="search-input" placeholder="Search...">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>PATIENT</th>
+                                <th>MEDICATION</th>
+                                <th>DOSAGE</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Demo User</td>
+                                <td>Propranolol</td>
+                                <td>10mg</td>
+                                <td><span class="status-approved">Approved</span></td>
+                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                            </tr>
+                            <tr>
+                                <td>John Smith</td>
+                                <td>Lexapro</td>
+                                <td>20mg</td>
+                                <td><span class="status-pending">Pending</span></td>
+                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ===== FINANCE - BILLING DASHBOARD ===== -->
+                <div id="billing-dashboard" class="content-section">
+                    <h2>Finance Dashboard</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <p class="stat-label">Revenue (Month)</p>
+                            <p class="stat-value">$10,560</p>
+                        </div>
+                        <div class="stat-card highlight">
+                            <p class="stat-label">Outstanding Invoices</p>
+                            <p class="stat-value">$1,320</p>
+                        </div>
+                    </div>
+                    <h3>Billing Records</h3>
+                    <div class="table-header">
+                        <div class="table-title"></div>
+                        <div class="header-controls">
+                            <button class="add-btn">+ Add New</button>
+                            <input type="text" class="search-input" placeholder="Search...">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>DATE</th>
+                                <th>PATIENT</th>
+                                <th>AMOUNT ($)</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-07-22</td>
+                                <td>Demo User</td>
+                                <td>120</td>
+                                <td><span class="status-approved">Paid</span></td>
+                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                            </tr>
+                            <tr>
+                                <td>2024-07-21</td>
+                                <td>Jane Smith</td>
+                                <td>120</td>
+                                <td><span class="status-approved">Paid</span></td>
+                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                            </tr>
+                            <tr>
+                                <td>2024-07-19</td>
+                                <td>John Doe</td>
+                                <td>120</td>
+                                <td><span class="status-unpaid">Unpaid</span></td>
+                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
