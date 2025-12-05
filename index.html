@@ -345,7 +345,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Analysis_ID</th>
                         <th>DATE</th>
                         <th>EMOTION</th>
                         <th>RISK SCORE</th>
@@ -437,8 +437,13 @@
     <!-- Recommendation History -->
     <div class="log-history" style="margin-top: 30px;">
         <h3>Recommendation History</h3>
-        <button class="add-btn">+ Add New</button>
-        <input type="text" class="search-input" placeholder="Search...">
+                    <div class="table-header">
+                        <div class="table-title"></div>
+                        <div class="header-controls">
+                            <button class="add-btn">+ Add New</button>
+                            <input type="text" class="search-input" placeholder="Search...">
+                        </div>
+                    </div>
         <table>
             <thead>
                 <tr>
@@ -509,7 +514,63 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="log-form" style="margin-top: 30px;">
+    <h3>Session Feedback</h3>
+    <div class="form-section">
+        <label>Rate Your Last Session</label>
+        <div class="rating" style="font-size: 24px; color: #FFD700;">
+            <span class="star" data-rating="1" onclick="rateSession(1)">★</span>
+            <span class="star" data-rating="2" onclick="rateSession(2)">★</span>
+            <span class="star" data-rating="3" onclick="rateSession(3)">★</span>
+            <span class="star" data-rating="4" onclick="rateSession(4)">★</span>
+            <span class="star" data-rating="5" onclick="rateSession(5)">★</span>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 13px; margin-top: 5px;">
+            Selected: <span id="rating-value">0</span>/5 stars
+        </p>
+    </div>
+    <div class="form-section">
+        <label>Additional Feedback</label>
+        <textarea id="session-feedback" placeholder="How was your session? What could be improved?" rows="3"></textarea>
+    </div>
+    <button class="save-btn" onclick="submitFeedback()">Submit Feedback</button>
+</div>
+
+<!-- Feedback History -->
+<div class="log-history" style="margin-top: 30px;">
+    <h3>Feedback History</h3>
+                        <div class="table-header">
+                        <div class="table-title"></div>
+                        <div class="header-controls">
+                            <button class="add-btn">+ Add New</button>
+                            <input type="text" class="search-input" placeholder="Search...">
+                        </div>
+                    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Feedback_ID</th>
+                <th>My_Session_ID</th>
+                <th>RATING</th>
+                <th>FEEDBACK</th>
+                <th>DATE</th>
+                <th>ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>001</td>
+                <td>001</td>
+                <td>★★★★★</td>
+                <td>Very helpful session</td>
+                <td>2024-11-20</td>
+                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
                 </div>
+                
 
                 <!-- ===== PATIENT - PROGRESS ===== -->
                 <div id="progress" class="content-section">
