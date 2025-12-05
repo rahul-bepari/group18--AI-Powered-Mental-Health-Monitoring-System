@@ -411,6 +411,71 @@ body {
     margin-top: 6px;
 }
 
+/* Quick Action Buttons */
+.quick-action {
+    background: var(--dark-card);
+    border: 1px solid var(--dark-border);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    color: var(--text-primary);
+}
+
+.quick-action:hover {
+    background: linear-gradient(135deg, rgba(217, 70, 239, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+    border-color: var(--primary);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(217, 70, 239, 0.15);
+}
+
+/* Mood chart bars animation */
+@keyframes growBar {
+    from { height: 0; opacity: 0; }
+    to { height: var(--target-height); opacity: 1; }
+}
+
+.chart-card .quick-action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* Recent activity table improvements */
+.chart-card table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.chart-card table tbody tr {
+    transition: background-color 0.2s;
+}
+
+.chart-card table tbody tr:hover {
+    background-color: rgba(217, 70, 239, 0.05);
+}
+
+/* Select dropdown styling */
+select {
+    background: var(--dark-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--dark-border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
 /* Daily Log Form */
 .log-form {
     background: var(--dark-card);

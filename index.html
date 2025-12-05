@@ -150,26 +150,215 @@
                     <h2>Dashboard</h2>
                     
                     <!-- PATIENT DASHBOARD -->
-                    <div id="patient-dashboard">
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <p class="stat-label">Avg. Mood (Last 7d)</p>
-                                <p class="stat-value">4.1 / 5</p>
+                     <!-- PATIENT DASHBOARD - ENHANCED -->
+                        <div id="patient-dashboard">
+                            <!-- Welcome Card -->
+                            <div style="background: linear-gradient(135deg, rgba(217, 70, 239, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%); border: 1px solid var(--dark-border); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3 style="color: var(--text-primary); margin-bottom: 8px;">Welcome back, <span id="patient-name">Alex</span>! 👋</h3>
+                                        <p style="color: var(--text-secondary);">Here's your mental health overview for today</p>
+                                    </div>
+                                    <button class="add-btn" onclick="logToday()" style="background: var(--success);">
+                                        📝 Log Today's Mood
+                                    </button>
+                                </div>
                             </div>
-                            <div class="stat-card">
-                                <p class="stat-label">Avg. Stress (Last 7d)</p>
-                                <p class="stat-value">2.8 / 5</p>
+
+                            <!-- Stats Grid with Icons -->
+                            <div class="stats-grid">
+                                <div class="stat-card" style="border-left: 4px solid #D946EF;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <div style="background: rgba(217, 70, 239, 0.1); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                            <span style="font-size: 20px;">😊</span>
+                                        </div>
+                                        <div>
+                                            <p class="stat-label">MOOD TREND</p>
+                                            <p class="stat-value">4.1 / 5</p>
+                                        </div>
+                                    </div>
+                                    <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">
+                                        <span style="color: #10B981;">↑ 12%</span> better than last week
+                                    </p>
+                                </div>
+                                
+                                <div class="stat-card" style="border-left: 4px solid #EF4444;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <div style="background: rgba(239, 68, 68, 0.1); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                            <span style="font-size: 20px;">😰</span>
+                                        </div>
+                                        <div>
+                                            <p class="stat-label">STRESS LEVEL</p>
+                                            <p class="stat-value">2.8 / 5</p>
+                                        </div>
+                                    </div>
+                                    <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">
+                                        <span style="color: #10B981;">↓ 8%</span> from last week
+                                    </p>
+                                </div>
+                                
+                                <div class="stat-card" style="border-left: 4px solid #06B6D4;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <div style="background: rgba(6, 182, 212, 0.1); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                            <span style="font-size: 20px;">😴</span>
+                                        </div>
+                                        <div>
+                                            <p class="stat-label">SLEEP QUALITY</p>
+                                            <p class="stat-value">7.6 hrs</p>
+                                        </div>
+                                    </div>
+                                    <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">
+                                        <span style="color: #EF4444;">↓ 0.4 hrs</span> from target
+                                    </p>
+                                </div>
+                                
+                                <div class="stat-card highlight" style="border-left: 4px solid #10B981;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <div style="background: rgba(16, 185, 129, 0.1); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                            <span style="font-size: 20px;">🤖</span>
+                                        </div>
+                                        <div>
+                                            <p class="stat-label">AI WELLNESS SCORE</p>
+                                            <p class="stat-value">82 / 100</p>
+                                        </div>
+                                    </div>
+                                    <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">
+                                        <span style="color: #10B981;">↑ 5 points</span> this month
+                                    </p>
+                                </div>
                             </div>
-                            <div class="stat-card">
-                                <p class="stat-label">Avg. Sleep (Last 7d)</p>
-                                <p class="stat-value">7.6 hrs</p>
+
+                            <!-- Charts and Quick Actions -->
+                            <div class="charts-grid" style="margin-top: 24px;">
+                                <!-- Mood Chart -->
+                                <div class="chart-card">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                        <h3>📈 Mood Tracker (Last 7 Days)</h3>
+                                        <select style="background: var(--dark-bg); color: var(--text-primary); border: 1px solid var(--dark-border); padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                            <option>Last 7 days</option>
+                                            <option>Last 30 days</option>
+                                            <option>Last 3 months</option>
+                                        </select>
+                                    </div>
+                                    <div style="display: flex; align-items: flex-end; height: 200px; gap: 12px; padding: 20px 0;">
+                                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                                            <div style="background: linear-gradient(to top, #D946EF, #E879F9); width: 100%; height: 120px; border-radius: 4px;"></div>
+                                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">Mon</p>
+                                        </div>
+                                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                                            <div style="background: linear-gradient(to top, #D946EF, #E879F9); width: 100%; height: 80px; border-radius: 4px;"></div>
+                                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">Tue</p>
+                                        </div>
+                                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                                            <div style="background: linear-gradient(to top, #D946EF, #E879F9); width: 100%; height: 150px; border-radius: 4px;"></div>
+                                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">Wed</p>
+                                        </div>
+                                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                                            <div style="background: linear-gradient(to top, #D946EF, #E879F9); width: 100%; height: 100px; border-radius: 4px;"></div>
+                                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">Thu</p>
+                                        </div>
+                                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                                            <div style="background: linear-gradient(to top, #D946EF, #E879F9); width: 100%; height: 60px; border-radius: 4px;"></div>
+                                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">Fri</p>
+                                        </div>
+                                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                                            <div style="background: linear-gradient(to top, #D946EF, #E879F9); width: 100%; height: 140px; border-radius: 4px;"></div>
+                                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">Sat</p>
+                                        </div>
+                                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                                            <div style="background: linear-gradient(to top, #D946EF, #E879F9); width: 100%; height: 90px; border-radius: 4px;"></div>
+                                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">Sun</p>
+                                        </div>
+                                    </div>
+                                    <p style="text-align: center; color: var(--text-secondary); font-size: 12px; margin-top: 10px;">Higher bars = Better mood</p>
+                                </div>
+
+                                <!-- Quick Actions -->
+                                <div class="chart-card">
+                                    <h3>⚡ Quick Actions</h3>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px;">
+                                        <button class="quick-action" onclick="navigateTo('daily-log')">
+                                            <span style="font-size: 24px; margin-bottom: 8px;">📝</span>
+                                            <span style="font-weight: 600; font-size: 13px;">Log Mood</span>
+                                            <span style="color: var(--text-secondary); font-size: 11px;">Daily check-in</span>
+                                        </button>
+                                        <button class="quick-action" onclick="navigateTo('ai-analysis')">
+                                            <span style="font-size: 24px; margin-bottom: 8px;">🤖</span>
+                                            <span style="font-weight: 600; font-size: 13px;">AI Analysis</span>
+                                            <span style="color: var(--text-secondary); font-size: 11px;">Journal review</span>
+                                        </button>
+                                        <button class="quick-action" onclick="navigateTo('recommendations')">
+                                            <span style="font-size: 24px; margin-bottom: 8px;">❤️</span>
+                                            <span style="font-weight: 600; font-size: 13px;">Activities</span>
+                                            <span style="color: var(--text-secondary); font-size: 11px;">Guided exercises</span>
+                                        </button>
+                                        <button class="quick-action" onclick="navigateTo('counseling')">
+                                            <span style="font-size: 24px; margin-bottom: 8px;">👨‍⚕️</span>
+                                            <span style="font-weight: 600; font-size: 13px;">Book Session</span>
+                                            <span style="color: var(--text-secondary); font-size: 11px;">Talk to counselor</span>
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Daily Reminder -->
+                                    <div style="background: var(--dark-bg); border-radius: 8px; padding: 16px; margin-top: 20px;">
+                                        <div style="display: flex; align-items: center; gap: 12px;">
+                                            <div style="background: rgba(217, 70, 239, 0.1); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                <span>🔔</span>
+                                            </div>
+                                            <div>
+                                                <p style="color: var(--text-primary); font-weight: 600; font-size: 13px;">Daily Reminder</p>
+                                                <p style="color: var(--text-secondary); font-size: 12px;">Time for your evening mood check</p>
+                                            </div>
+                                        </div>
+                                        <button class="save-btn" style="width: 100%; margin-top: 12px; padding: 8px;" onclick="logToday()">
+                                            Do It Now
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="stat-card highlight">
-                                <p class="stat-label">AI Wellness Score</p>
-                                <p class="stat-value">82 / 100</p>
+
+                            <!-- Recent Activity -->
+                            <div class="chart-card" style="margin-top: 24px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                    <h3>📋 Recent Activity</h3>
+                                    <button class="add-btn" onclick="navigateTo('daily-log')" style="padding: 6px 12px; font-size: 12px;">
+                                        View All
+                                    </button>
+                                </div>
+                                <table style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left; padding: 10px 0; color: var(--text-secondary); font-size: 12px;">TIME</th>
+                                            <th style="text-align: left; padding: 10px 0; color: var(--text-secondary); font-size: 12px;">ACTIVITY</th>
+                                            <th style="text-align: left; padding: 10px 0; color: var(--text-secondary); font-size: 12px;">STATUS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="border-bottom: 1px solid var(--dark-border);">
+                                            <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Today, 9:00 AM</td>
+                                            <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Morning mood log</td>
+                                            <td style="padding: 12px 0;"><span style="background: rgba(16, 185, 129, 0.15); color: #10B981; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Completed</span></td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid var(--dark-border);">
+                                            <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Yesterday, 3:30 PM</td>
+                                            <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">AI journal analysis</td>
+                                            <td style="padding: 12px 0;"><span style="background: rgba(16, 185, 129, 0.15); color: #10B981; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Completed</span></td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid var(--dark-border);">
+                                            <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Nov 18, 10:00 AM</td>
+                                            <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Counseling session</td>
+                                            <td style="padding: 12px 0;"><span style="background: rgba(16, 185, 129, 0.15); color: #10B981; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Completed</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Nov 17, 7:00 PM</td>
+                                            <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Evening meditation</td>
+                                            <td style="padding: 12px 0;"><span style="background: rgba(239, 68, 68, 0.15); color: #EF4444; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Missed</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </div>
+                    
 
                     <!-- ADMIN DASHBOARD -->
                     <div id="admin-dashboard" style="display: none;">
@@ -1196,6 +1385,39 @@
     function bookCounsellor() {
         alert('Redirecting to counselor booking...');
     }
+    // Dashboard Functions
+function logToday() {
+    alert("Redirecting to Daily Log page...");
+    // In real implementation, this would switch tabs
+    // For now, just show alert
+    const dailyLogBtn = document.querySelector('[data-page="daily-log"]');
+    if (dailyLogBtn) {
+        dailyLogBtn.click();
+    }
+}
+
+function navigateTo(page) {
+    // Find and click the navigation button for the page
+    const navBtn = document.querySelector(`[data-page="${page}"]`);
+    if (navBtn) {
+        navBtn.click();
+    } else {
+        alert(`Navigating to ${page}...`);
+    }
+}
+
+// Initialize dashboard with current date
+function initDashboard() {
+    const today = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateString = today.toLocaleDateString('en-US', options);
+    
+    // Update any date displays if needed
+    console.log("Dashboard initialized:", dateString);
+}
+
+// Call when page loads
+document.addEventListener('DOMContentLoaded', initDashboard);
 </script>
 </body>
 </html>
