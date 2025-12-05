@@ -620,14 +620,101 @@
                 </div>
 
                 <!-- ===== PATIENT - CRISIS SUPPORT ===== -->
-                <div id="crisis-support" class="content-section">
-                    <h2>Crisis Support</h2>
-                    <div class="helpline-card">
-                        <p><strong>National Crisis Hotline:</strong></p>
-                        <p class="phone">1-800-273-8255</p>
-                    </div>
-                    <button class="crisis-btn">Connect with Counselor</button>
-                </div>
+<div id="crisis-support" class="content-section">
+    <h2>Crisis Detection & Emergency Support</h2>
+    
+    <!-- AI Crisis Detection Alert -->
+    <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(217, 70, 239, 0.1) 100%); border: 1px solid #EF4444; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+        <h3 style="color: #EF4444; margin-bottom: 10px;">⚠️ AI Crisis Detection Active</h3>
+        <p style="color: var(--text-primary);">AI monitors your mood logs and journal entries for signs of distress.</p>
+        <p style="color: var(--text-secondary); font-size: 14px; margin-top: 8px;">
+            Last check: <span id="last-check">Today, 10:30 AM</span> • Status: <span style="color: #10B981;">Normal</span>
+        </p>
+    </div>
+
+    <!-- Emergency Contacts -->
+    <div class="crisis-section">
+        <div class="helpline-card">
+            <h3>Emergency Helplines</h3>
+            <p><strong>National Suicide Prevention Lifeline:</strong></p>
+            <p class="phone">1-800-273-8255</p>
+            <p><strong>Crisis Text Line:</strong></p>
+            <p class="phone">Text HOME to 741741</p>
+            <p><strong>Local Emergency:</strong></p>
+            <p class="phone">911</p>
+        </div>
+        
+        <div class="helpline-card">
+            <h3>Your Emergency Contacts</h3>
+            <div id="user-contacts">
+                <p>👤 <strong>Emergency Contact 1:</strong> John Doe - 123-456-7890</p>
+                <p>👤 <strong>Emergency Contact 2:</strong> Jane Smith - 098-765-4321</p>
+            </div>
+            <button class="save-btn" style="margin-top: 15px;" onclick="editContacts()">Edit Contacts</button>
+        </div>
+    </div>
+
+    <!-- Emergency Actions -->
+    <div style="margin-top: 30px;">
+        <h3>Immediate Support</h3>
+        <button class="crisis-btn" onclick="logCrisis('connect_counselor')">🔗 Connect with Available Counselor</button>
+        <button class="crisis-btn" style="background: #9333EA;" onclick="logCrisis('emergency_call')">📞 Call Emergency Contact</button>
+        <button class="crisis-btn" style="background: #06B6D4;" onclick="logCrisis('coping_tools')">🛠️ Show Coping Tools</button>
+    </div>
+
+    <!-- Crisis Alert Log -->
+    <div class="log-history" style="margin-top: 30px;">
+        <h3>Crisis Alert Log</h3>
+        <div class="table-header">
+            <div class="table-title">AI-detected and user-initiated alerts</div>
+            <div class="header-controls">
+                <button class="add-btn" onclick="exportAlerts()">📥 Export Log</button>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Crisis_ID</th>
+                    <th>DATE & TIME</th>
+                    <th>TYPE</th>
+                    <th>SEVERITY</th>
+                    <th>ACTION TAKEN</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>S001</td>
+                    <td>2024-11-18 15:45</td>
+                    <td>AI Detection</td>
+                    <td><span style="color: #EF4444; font-weight: bold;">High</span></td>
+                    <td>Alert sent to counselor</td>
+                </tr>
+                <tr>
+                    <td>002</td>
+                    <td>2024-11-15 10:20</td>
+                    <td>User Initiated</td>
+                    <td><span style="color: #D946EF; font-weight: bold;">Medium</span></td>
+                    <td>Coping tools shown</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Coping Tools (Hidden by default) -->
+    <div id="coping-tools" style="display: none; margin-top: 20px;">
+        <h3>🛠️ Immediate Coping Tools</h3>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+            <div style="background: var(--dark-bg); padding: 15px; border-radius: 8px;">
+                <h4>🌬️ 5-4-3-2-1 Grounding</h4>
+                <p>Name 5 things you see, 4 things you feel, 3 things you hear, 2 things you smell, 1 thing you taste.</p>
+            </div>
+            <div style="background: var(--dark-bg); padding: 15px; border-radius: 8px;">
+                <h4>💭 Positive Affirmation</h4>
+                <p>"This feeling is temporary. I have survived 100% of my worst days."</p>
+            </div>
+        </div>
+    </div>
+</div>
 
                 <!-- ===== ADMIN - USER MANAGEMENT ===== -->
                 <div id="user-management" class="content-section">
@@ -974,5 +1061,141 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+    // ===== AI Analysis Functions =====
+    function analyzeJournal() {
+        const journalText = document.getElementById('journal-entry').value;
+        if (!journalText.trim()) {
+            alert('Please write something in your journal.');
+            return;
+        }
+        
+        // Simulate AI analysis
+        document.getElementById('detected-emotion').textContent = 'Anxious';
+        document.getElementById('risk-score').textContent = 'Medium (65/100)';
+        document.getElementById('keywords').textContent = 'work, overwhelmed, tired, deadline';
+        document.getElementById('ai-insight').textContent = 'Your writing shows work-related anxiety. Consider breaking tasks into smaller steps.';
+        
+        document.getElementById('ai-results').style.display = 'block';
+        
+        // Log to console (for project demo)
+        console.log('AI Journal Analysis:', {
+            text: journalText,
+            emotion: 'Anxious',
+            riskScore: 65,
+            keywords: ['work', 'overwhelmed', 'tired', 'deadline']
+        });
+    }
+
+    function askAI() {
+        const question = document.getElementById('user-question').value;
+        if (!question.trim()) {
+            alert('Please enter a question.');
+            return;
+        }
+        
+        const chatContainer = document.querySelector('.chat-container');
+        const userMsg = document.createElement('div');
+        userMsg.className = 'chat-message user';
+        userMsg.innerHTML = `<strong>You:</strong> ${question}`;
+        userMsg.style.background = 'rgba(217, 70, 239, 0.1)';
+        userMsg.style.padding = '10px';
+        userMsg.style.borderRadius = '8px';
+        userMsg.style.marginBottom = '10px';
+        chatContainer.appendChild(userMsg);
+        
+        // Simulate AI response (for demo)
+        setTimeout(() => {
+            const aiMsg = document.createElement('div');
+            aiMsg.className = 'chat-message ai';
+            aiMsg.innerHTML = `<strong>AI Assistant:</strong> Based on your question about "${question}", I recommend practicing mindfulness techniques and considering speaking with a counselor if these feelings persist.`;
+            aiMsg.style.background = 'rgba(6, 182, 212, 0.1)';
+            aiMsg.style.padding = '10px';
+            aiMsg.style.borderRadius = '8px';
+            aiMsg.style.marginBottom = '10px';
+            chatContainer.appendChild(aiMsg);
+            
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }, 1000);
+        
+        // Clear input
+        document.getElementById('user-question').value = '';
+    }
+
+    // ===== Feedback Functions =====
+    let currentRating = 0;
+    
+    function rateSession(rating) {
+        currentRating = rating;
+        const stars = document.querySelectorAll('.star');
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.style.color = '#FFD700';
+            } else {
+                star.style.color = '#64748B';
+            }
+        });
+        document.getElementById('rating-value').textContent = rating;
+    }
+
+    function submitFeedback() {
+        const feedback = document.getElementById('session-feedback').value;
+        if (currentRating === 0) {
+            alert('Please rate the session.');
+            return;
+        }
+        alert(`Thank you for your ${currentRating}-star feedback!`);
+        console.log('Feedback submitted:', { rating: currentRating, feedback: feedback });
+    }
+
+    // ===== Crisis Support Functions =====
+    function logCrisis(type) {
+        const types = {
+            'connect_counselor': 'Connected with counselor',
+            'emergency_call': 'Emergency call initiated',
+            'coping_tools': 'Coping tools accessed'
+        };
+        
+        console.log(`Crisis action logged: ${type} - ${types[type]}`);
+        alert(`Safety action taken: ${types[type]}`);
+        
+        // Show coping tools if that button clicked
+        if (type === 'coping_tools') {
+            document.getElementById('coping-tools').style.display = 'block';
+        }
+    }
+
+    function editContacts() {
+        const newContact1 = prompt('Enter Emergency Contact 1 (Name - Phone):', 'John Doe - 123-456-7890');
+        const newContact2 = prompt('Enter Emergency Contact 2 (Name - Phone):', 'Jane Smith - 098-765-4321');
+        
+        if (newContact1 && newContact2) {
+            document.getElementById('user-contacts').innerHTML = `
+                <p>👤 <strong>Emergency Contact 1:</strong> ${newContact1}</p>
+                <p>👤 <strong>Emergency Contact 2:</strong> ${newContact2}</p>
+            `;
+        }
+    }
+
+    function exportAlerts() {
+        alert('Crisis log exported (simulated for demo)');
+        console.log('Exporting crisis alerts...');
+    }
+
+    // ===== Recommendation Functions =====
+    function startActivity(type) {
+        const activities = {
+            'mood': 'Gratitude Journaling',
+            'stress': 'Breathing Exercise',
+            'sleep': 'Sleep Hygiene Practice'
+        };
+        alert(`Starting ${activities[type]} activity...`);
+    }
+
+    function bookCounsellor() {
+        alert('Redirecting to counselor booking...');
+    }
+</script>
 </body>
 </html>
