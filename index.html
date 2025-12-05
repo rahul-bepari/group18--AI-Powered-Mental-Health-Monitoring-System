@@ -97,7 +97,19 @@
                         <span class="icon">⚠️</span>
                         <span>Crisis Support</span>
                     </button>
-                    
+                    <!-- COUNSELOR FEATURES -->
+                    <button class="nav-item" data-page="counselor-dashboard" style="display: none;">
+                        <span class="icon">📊</span>
+                        <span>Counselor Dashboard</span>
+                    </button>
+                    <button class="nav-item" data-page="counseling" style="display: none;">
+                        <span class="icon">👨‍⚕️</span>
+                        <span>Session Management</span>
+                    </button>
+                    <button class="nav-item" data-page="counselor-patients" style="display: none;">
+                        <span class="icon">📈</span>
+                        <span>My Patients</span>
+
                     <!-- ADMIN FEATURES -->
                     <button class="nav-item" data-page="user-management" style="display: none;">
                         <span class="icon">👥</span>
@@ -1385,39 +1397,6 @@
     function bookCounsellor() {
         alert('Redirecting to counselor booking...');
     }
-    // Dashboard Functions
-function logToday() {
-    alert("Redirecting to Daily Log page...");
-    // In real implementation, this would switch tabs
-    // For now, just show alert
-    const dailyLogBtn = document.querySelector('[data-page="daily-log"]');
-    if (dailyLogBtn) {
-        dailyLogBtn.click();
-    }
-}
-
-function navigateTo(page) {
-    // Find and click the navigation button for the page
-    const navBtn = document.querySelector(`[data-page="${page}"]`);
-    if (navBtn) {
-        navBtn.click();
-    } else {
-        alert(`Navigating to ${page}...`);
-    }
-}
-
-// Initialize dashboard with current date
-function initDashboard() {
-    const today = new Date();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const dateString = today.toLocaleDateString('en-US', options);
-    
-    // Update any date displays if needed
-    console.log("Dashboard initialized:", dateString);
-}
-
-// Call when page loads
-document.addEventListener('DOMContentLoaded', initDashboard);
 </script>
 </body>
 </html>
