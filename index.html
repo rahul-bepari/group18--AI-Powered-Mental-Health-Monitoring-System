@@ -97,18 +97,13 @@
                         <span class="icon">⚠️</span>
                         <span>Crisis Support</span>
                     </button>
+
                     <!-- COUNSELOR FEATURES -->
-                    <button class="nav-item" data-page="counselor-dashboard" style="display: none;">
-                        <span class="icon">📊</span>
-                        <span>Counselor Dashboard</span>
-                    </button>
-                    <button class="nav-item" data-page="counseling" style="display: none;">
+                    <button class="nav-item" data-page="counselor-sessions" style="display: none;">
                         <span class="icon">👨‍⚕️</span>
                         <span>Session Management</span>
                     </button>
-                    <button class="nav-item" data-page="counselor-patients" style="display: none;">
-                        <span class="icon">📈</span>
-                        <span>My Patients</span>
+                    
 
                     <!-- ADMIN FEATURES -->
                     <button class="nav-item" data-page="user-management" style="display: none;">
@@ -916,6 +911,393 @@
         </div>
     </div>
 </div>
+                
+                <!-- COUNSELOR DASHBOARD -->
+                <div id="counselor-dashboard" style="display: none;">
+                    <!-- Welcome Card -->
+                    <div style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%); border: 1px solid var(--dark-border); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h3 style="color: var(--text-primary); margin-bottom: 8px;">Welcome back, Dr. <span id="counselor-name">Sarah Johnson</span>! 👨‍⚕️</h3>
+                                <p style="color: var(--text-secondary)">Your counseling dashboard for today</p>
+                            </div>
+                            <button class="add-btn" onclick="viewTodaySessions()" style="background: var(--secondary);">
+                                📅 View Today's Sessions
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Stats Grid for Counselor -->
+                    <div class="stats-grid">
+                        <div class="stat-card" style="border-left: 4px solid #06B6D4;">
+                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <div style="background: rgba(6, 182, 212, 0.1); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                    <span style="font-size: 20px;">👥</span>
+                                </div>
+                                <div>
+                                    <p class="stat-label">ACTIVE PATIENTS</p>
+                                    <p class="stat-value">9</p>
+                                </div>
+                            </div>
+                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">
+                                <span style="color: #10B981;">↑ 2</span> this month
+                            </p>
+                        </div>
+                        
+                        <div class="stat-card" style="border-left: 4px solid #10B981;">
+                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <div style="background: rgba(16, 185, 129, 0.1); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                    <span style="font-size: 20px;">📅</span>
+                                </div>
+                                <div>
+                                    <p class="stat-label">TODAY'S APPOINTMENTS</p>
+                                    <p class="stat-value">3</p>
+                                </div>
+                            </div>
+                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">
+                                Next: <span style="color: var(--primary);">10:00 AM</span>
+                            </p>
+                        </div>
+                        
+                        <div class="stat-card" style="border-left: 4px solid #EF4444;">
+                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <div style="background: rgba(239, 68, 68, 0.1); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                    <span style="font-size: 20px;">⚠️</span>
+                                </div>
+                                <div>
+                                    <p class="stat-label">EMERGENCY ALERTS</p>
+                                    <p class="stat-value">2</p>
+                                </div>
+                            </div>
+                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">
+                                <span style="color: #EF4444;">Needs attention</span>
+                            </p>
+                        </div>
+                        
+                        <div class="stat-card highlight" style="border-left: 4px solid #D946EF;">
+                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <div style="background: rgba(217, 70, 239, 0.1); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                    <span style="font-size: 20px;">📊</span>
+                                </div>
+                                <div>
+                                    <p class="stat-label">SESSIONS COMPLETED</p>
+                                    <p class="stat-value">80%</p>
+                                </div>
+                            </div>
+                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">
+                                <span style="color: #10B981;">↑ 5%</span> this month
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Today's Sessions -->
+                    <div class="chart-card" style="margin-top: 24px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h3>📅 Today's Schedule</h3>
+                            <button class="add-btn" onclick="addNewSession()" style="padding: 6px 12px; font-size: 12px;">
+                                + Add Session
+                            </button>
+                        </div>
+                        <table style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left; padding: 10px 0; color: var(--text-secondary); font-size: 12px;">TIME</th>
+                                    <th style="text-align: left; padding: 10px 0; color: var(--text-secondary); font-size: 12px;">PATIENT</th>
+                                    <th style="text-align: left; padding: 10px 0; color: var(--text-secondary); font-size: 12px;">TYPE</th>
+                                    <th style="text-align: left; padding: 10px 0; color: var(--text-secondary); font-size: 12px;">STATUS</th>
+                                    <th style="text-align: left; padding: 10px 0; color: var(--text-secondary); font-size: 12px;">ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--dark-border);">
+                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">10:00 AM</td>
+                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Alex Johnson</td>
+                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Regular</td>
+                                    <td style="padding: 12px 0;"><span style="background: rgba(16, 185, 129, 0.15); color: #10B981; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Scheduled</span></td>
+                                    <td style="padding: 12px 0;">
+                                        <button class="action-icon" style="padding: 4px 8px; background: var(--primary); color: white; border: none; border-radius: 4px; font-size: 11px; cursor: pointer;">Start</button>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--dark-border);">
+                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">2:00 PM</td>
+                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Maria Garcia</td>
+                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Emergency</td>
+                                    <td style="padding: 12px 0;"><span style="background: rgba(239, 68, 68, 0.15); color: #EF4444; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Pending</span></td>
+                                    <td style="padding: 12px 0;">
+                                        <button class="action-icon" style="padding: 4px 8px; background: var(--secondary); color: white; border: none; border-radius: 4px; font-size: 11px; cursor: pointer;">Prepare</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">4:30 PM</td>
+                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Robert Chen</td>
+                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Follow-up</td>
+                                    <td style="padding: 12px 0;"><span style="background: rgba(217, 70, 239, 0.15); color: #D946EF; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Confirmed</span></td>
+                                    <td style="padding: 12px 0;">
+                                        <button class="action-icon" style="padding: 4px 8px; background: var(--dark-border); color: var(--text-primary); border: none; border-radius: 4px; font-size: 11px; cursor: pointer;">Notes</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Patient Progress Overview -->
+                    <div class="charts-grid" style="margin-top: 24px;">
+                        <div class="chart-card">
+                            <h3>📈 Patient Progress Overview</h3>
+                            <div style="display: flex; align-items: center; height: 200px; gap: 20px; padding: 20px 0;">
+                                <div style="flex: 1; text-align: center;">
+                                    <div style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%; background: conic-gradient(#10B981 75%, var(--dark-border) 25%); display: flex; align-items: center; justify-content: center; position: relative;">
+                                        <div style="width: 80px; height: 80px; background: var(--dark-card); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <span style="font-size: 20px; font-weight: bold; color: #10B981;">75%</span>
+                                        </div>
+                                    </div>
+                                    <p style="color: var(--text-secondary); font-size: 12px; margin-top: 10px;">Improving</p>
+                                </div>
+                                <div style="flex: 1; text-align: center;">
+                                    <div style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%; background: conic-gradient(#D946EF 60%, var(--dark-border) 40%); display: flex; align-items: center; justify-content: center; position: relative;">
+                                        <div style="width: 80px; height: 80px; background: var(--dark-card); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <span style="font-size: 20px; font-weight: bold; color: #D946EF;">60%</span>
+                                        </div>
+                                    </div>
+                                    <p style="color: var(--text-secondary); font-size: 12px; margin-top: 10px;">Stable</p>
+                                </div>
+                                <div style="flex: 1; text-align: center;">
+                                    <div style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%; background: conic-gradient(#EF4444 15%, var(--dark-border) 85%); display: flex; align-items: center; justify-content: center; position: relative;">
+                                        <div style="width: 80px; height: 80px; background: var(--dark-card); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <span style="font-size: 20px; font-weight: bold; color: #EF4444;">15%</span>
+                                        </div>
+                                    </div>
+                                    <p style="color: var(--text-secondary); font-size: 12px; margin-top: 10px;">Needs Attention</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions for Counselor -->
+                        <div class="chart-card">
+                            <h3>⚡ Quick Actions</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px;">
+                                <button class="quick-action" onclick="reviewPatientNotes()">
+                                    <span style="font-size: 24px; margin-bottom: 8px;">📝</span>
+                                    <span style="font-weight: 600; font-size: 13px;">Review Notes</span>
+                                    <span style="color: var(--text-secondary); font-size: 11px;">Patient journals</span>
+                                </button>
+                                <button class="quick-action" onclick="checkAlerts()">
+                                    <span style="font-size: 24px; margin-bottom: 8px;">⚠️</span>
+                                    <span style="font-weight: 600; font-size: 13px;">Check Alerts</span>
+                                    <span style="color: var(--text-secondary); font-size: 11px;">Emergency cases</span>
+                                </button>
+                                <button class="quick-action" onclick="viewReports()">
+                                    <span style="font-size: 24px; margin-bottom: 8px;">📊</span>
+                                    <span style="font-weight: 600; font-size: 13px;">View Reports</span>
+                                    <span style="color: var(--text-secondary); font-size: 11px;">Progress analytics</span>
+                                </button>
+                                <button class="quick-action" onclick="scheduleFollowup()">
+                                    <span style="font-size: 24px; margin-bottom: 8px;">📅</span>
+                                    <span style="font-weight: 600; font-size: 13px;">Schedule</span>
+                                    <span style="color: var(--text-secondary); font-size: 11px;">Follow-up sessions</span>
+                                </button>
+                            </div>
+                            
+                            <!-- Recent Patient Updates -->
+                            <div style="background: var(--dark-bg); border-radius: 8px; padding: 16px; margin-top: 20px;">
+                                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                    <div style="background: rgba(217, 70, 239, 0.1); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        <span>👤</span>
+                                    </div>
+                                    <div>
+                                        <p style="color: var(--text-primary); font-weight: 600; font-size: 13px;">Recent Patient Update</p>
+                                        <p style="color: var(--text-secondary); font-size: 12px;">Alex reported improved sleep (8 hrs)</p>
+                                    </div>
+                                </div>
+                                <button class="save-btn" style="width: 100%; margin-top: 8px; padding: 8px;" onclick="viewPatientDetails()">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                        <!-- ===== COUNSELOR - SESSION MANAGEMENT ===== -->
+                        <div id="counselor-sessions" class="content-section" style="display: none;">
+                            <h2>Session Management</h2>
+                            
+                            <!-- Quick Stats -->
+                            <div class="stats-grid" style="margin-bottom: 24px;">
+                                <div class="stat-card">
+                                    <p class="stat-label">Today's Appointments</p>
+                                    <p class="stat-value">3</p>
+                                </div>
+                                <div class="stat-card">
+                                    <p class="stat-label">Pending Follow-ups</p>
+                                    <p class="stat-value">5</p>
+                                </div>
+                                <div class="stat-card">
+                                    <p class="stat-label">Active Patients</p>
+                                    <p class="stat-value">9</p>
+                                </div>
+                                <div class="stat-card highlight">
+                                    <p class="stat-label">Avg. Session Rating</p>
+                                    <p class="stat-value">4.8 ★</p>
+                                </div>
+                            </div>
+
+                            <!-- Quick Actions -->
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                                <button class="quick-action" onclick="startNewSession()">
+                                    <span style="font-size: 24px;">🎬</span>
+                                    <span style="font-weight: 600;">Start Session</span>
+                                </button>
+                                <button class="quick-action" onclick="viewPatientProgress()">
+                                    <span style="font-size: 24px;">📈</span>
+                                    <span style="font-weight: 600;">View Progress</span>
+                                </button>
+                                <button class="quick-action" onclick="manageAvailability()">
+                                    <span style="font-size: 24px;">📅</span>
+                                    <span style="font-weight: 600;">Set Availability</span>
+                                </button>
+                                <button class="quick-action" onclick="reviewAlerts()">
+                                    <span style="font-size: 24px;">⚠️</span>
+                                    <span style="font-weight: 600;">Crisis Alerts</span>
+                                </button>
+                            </div>
+
+                            <!-- Single Main Table: Patient Sessions -->
+                            <div class="log-history">
+                                <div class="table-header">
+                                    <div class="table-title">Patient Sessions</div>
+                                    <div class="header-controls">
+                                        <button class="add-btn" onclick="addNewSession()">+ Add Session</button>
+                                        <input type="text" class="search-input" placeholder="Search patients...">
+                                        <select style="background: var(--dark-bg); color: var(--text-primary); border: 1px solid var(--dark-border); padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                            <option>All Status</option>
+                                            <option>Scheduled</option>
+                                            <option>Completed</option>
+                                            <option>Cancelled</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Session_ID</th>
+                                            <th>PATIENT</th>
+                                            <th>DATE & TIME</th>
+                                            <th>TYPE</th>
+                                            <th>STATUS</th>
+                                            <th>NOTES</th>
+                                            <th>ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>001</td>
+                                            <td>Alex Johnson</td>
+                                            <td>Today, 10:00 AM</td>
+                                            <td>Video Call</td>
+                                            <td>
+                                                <span class="status-approved" style="background: rgba(16, 185, 129, 0.15); color: #10B981;">Scheduled</span>
+                                            </td>
+                                            <td>Regular check-in</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <span class="action-icon" onclick="startSession('S001')" title="Start Session">▶️</span>
+                                                    <span class="action-icon" onclick="addNote('S001')" title="Add Notes">📝</span>
+                                                    <span class="action-icon" onclick="rescheduleSession('S001')" title="Reschedule">🔄</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>002</td>
+                                            <td>Maria Garcia</td>
+                                            <td>Today, 2:00 PM</td>
+                                            <td>In-person</td>
+                                            <td>
+                                                <span style="background: rgba(239, 68, 68, 0.15); color: #EF4444; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Emergency</span>
+                                            </td>
+                                            <td>High anxiety reported</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <span class="action-icon" onclick="startSession('S002')" title="Start Session">▶️</span>
+                                                    <span class="action-icon" onclick="viewPatientChart('P002')" title="View Chart">📊</span>
+                                                    <span class="action-icon" onclick="messagePatient('P002')" title="Message">💬</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>003</td>
+                                            <td>Robert Chen</td>
+                                            <td>Tomorrow, 4:30 PM</td>
+                                            <td>Phone Call</td>
+                                            <td>
+                                                <span class="status-pending">Confirmed</span>
+                                            </td>
+                                            <td>Follow-up session</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <span class="action-icon" onclick="remindPatient('S003')" title="Send Reminder">🔔</span>
+                                                    <span class="action-icon" onclick="rescheduleSession('S003')" title="Reschedule">🔄</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>004</td>
+                                            <td>Sarah Williams</td>
+                                            <td>2024-11-18, 11:00 AM</td>
+                                            <td>Video Call</td>
+                                            <td>
+                                                <span style="background: rgba(6, 182, 212, 0.15); color: #06B6D4; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Completed</span>
+                                            </td>
+                                            <td>Discussed sleep issues</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <span class="action-icon" onclick="viewNotes('S004')" title="View Notes">👁️</span>
+                                                    <span class="action-icon" onclick="downloadReport('S004')" title="Download">📥</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>005</td>
+                                            <td>James Wilson</td>
+                                            <td>2024-11-20, 3:00 PM</td>
+                                            <td>In-person</td>
+                                            <td>
+                                                <span style="background: rgba(156, 163, 175, 0.15); color: #9CA3AF; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Cancelled</span>
+                                            </td>
+                                            <td>Patient rescheduled</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <span class="action-icon" onclick="rebookSession('S005')" title="Rebook">📅</span>
+                                                    <span class="action-icon" onclick="archiveSession('S005')" title="Archive">🗄️</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Session Notes Section (Collapsible) -->
+                            <div class="chart-card" style="margin-top: 24px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; cursor: pointer;" onclick="toggleNotesSection()">
+                                    <h3>📝 Session Notes & Follow-ups</h3>
+                                    <span id="notes-toggle">▼</span>
+                                </div>
+                                <div id="notes-section" style="display: none;">
+                                    <div style="background: var(--dark-bg); padding: 16px; border-radius: 8px; margin-bottom: 12px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                            <span style="color: var(--text-primary); font-weight: 600;">Alex Johnson - Session S001</span>
+                                            <span style="color: var(--text-secondary); font-size: 12px;">Today, 10:00 AM</span>
+                                        </div>
+                                        <p style="color: var(--text-secondary); font-size: 13px;">Patient reported improved sleep patterns. Recommended continuing mindfulness exercises. Follow-up in 2 weeks.</p>
+                                        <textarea placeholder="Add additional notes..." style="width: 100%; margin-top: 12px; padding: 8px; background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 6px; color: var(--text-primary); font-size: 13px;"></textarea>
+                                        <button class="save-btn" style="margin-top: 12px; padding: 6px 12px; font-size: 12px;">Save Notes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
 
                 <!-- ===== ADMIN - USER MANAGEMENT ===== -->
                 <div id="user-management" class="content-section">
@@ -1197,6 +1579,31 @@
                     </table>
                 </div>
 
+                <!-- COUNSELOR DASHBOARD -->
+                <div id="counselor-dashboard" style="display: none;">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <p class="stat-label">Active Patients</p>
+                            <p class="stat-value">9</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="stat-label">Today's Appointments</p>
+                            <p class="stat-value">3</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="stat-label">Emergency Alerts</p>
+                            <p class="stat-value">2</p>
+                        </div>
+                        <div class="stat-card highlight">
+                            <p class="stat-label">Sessions Completed</p>
+                            <p class="stat-value">80%</p>
+                        </div>
+                    </div>
+                </div>
+                                
+
+
+
                 <!-- ===== FINANCE - BILLING DASHBOARD ===== -->
                 <div id="billing-dashboard" class="content-section">
                     <h2>Finance Dashboard</h2>
@@ -1397,6 +1804,141 @@
     function bookCounsellor() {
         alert('Redirecting to counselor booking...');
     }
+    // ===== Counselor Dashboard Functions =====
+function viewTodaySessions() {
+    alert('Showing today\'s counseling sessions');
+    // In a real app, this would filter the sessions table
+}
+
+function addNewSession() {
+    alert('Opening session booking form');
+    // In a real app, this would open a modal/form
+}
+
+function reviewPatientNotes() {
+    alert('Opening patient notes for review');
+}
+
+function checkAlerts() {
+    alert('Showing emergency alerts dashboard');
+}
+
+function viewReports() {
+    alert('Opening progress reports');
+}
+
+function scheduleFollowup() {
+    alert('Opening follow-up scheduling');
+}
+
+function viewPatientDetails() {
+    alert('Showing detailed patient profile');
+}
+// ===== Simplified Counselor Session Management Functions =====
+function startNewSession() {
+    const patient = prompt('Enter patient name for new session:');
+    if (patient) {
+        alert(`Starting new session with ${patient}...`);
+        console.log('New session started with:', patient);
+    }
+}
+
+function addNewSession() {
+    const patient = prompt('Enter patient name:');
+    const date = prompt('Enter date and time:');
+    const type = prompt('Enter session type (Video/In-person/Phone):');
+    
+    if (patient && date && type) {
+        alert(`Session added for ${patient} on ${date} (${type})`);
+        console.log('New session added:', { patient, date, type });
+    }
+}
+
+function startSession(sessionId) {
+    alert(`Starting session ${sessionId}...`);
+    console.log('Starting session:', sessionId);
+}
+
+function addNote(sessionId) {
+    const note = prompt(`Add notes for session ${sessionId}:`);
+    if (note) {
+        alert(`Notes added to session ${sessionId}`);
+        console.log('Notes added to', sessionId, ':', note);
+    }
+}
+
+function rescheduleSession(sessionId) {
+    const newDate = prompt(`Enter new date/time for session ${sessionId}:`);
+    if (newDate) {
+        alert(`Session ${sessionId} rescheduled to ${newDate}`);
+        console.log('Session rescheduled:', sessionId, 'to', newDate);
+    }
+}
+
+function viewPatientChart(patientId) {
+    alert(`Viewing progress chart for patient ${patientId}...`);
+}
+
+function messagePatient(patientId) {
+    const message = prompt(`Message to patient ${patientId}:`);
+    if (message) {
+        alert(`Message sent to patient ${patientId}`);
+        console.log('Message sent:', message);
+    }
+}
+
+function remindPatient(sessionId) {
+    alert(`Reminder sent for session ${sessionId}`);
+    console.log('Reminder sent for session:', sessionId);
+}
+
+function viewNotes(sessionId) {
+    alert(`Viewing notes for session ${sessionId}...`);
+}
+
+function downloadReport(sessionId) {
+    alert(`Downloading report for session ${sessionId}...`);
+}
+
+function rebookSession(sessionId) {
+    alert(`Rebooking cancelled session ${sessionId}...`);
+}
+
+function archiveSession(sessionId) {
+    if (confirm(`Archive session ${sessionId}?`)) {
+        alert(`Session ${sessionId} archived`);
+        console.log('Session archived:', sessionId);
+    }
+}
+
+function toggleNotesSection() {
+    const notesSection = document.getElementById('notes-section');
+    const toggleIcon = document.getElementById('notes-toggle');
+    
+    if (notesSection.style.display === 'none') {
+        notesSection.style.display = 'block';
+        toggleIcon.textContent = '▲';
+    } else {
+        notesSection.style.display = 'none';
+        toggleIcon.textContent = '▼';
+    }
+}
+
+// Keep these functions from before (they're still useful)
+function viewPatientProgress() {
+    alert('Opening patient progress reports...');
+}
+
+function manageAvailability() {
+    const dates = prompt('Enter your available dates (e.g., Mon-Fri 9AM-5PM):', 'Monday-Friday, 9:00 AM - 5:00 PM');
+    if (dates) {
+        alert('Availability updated!');
+    }
+}
+
+function reviewAlerts() {
+    alert('Opening crisis alerts dashboard...');
+}
 </script>
 </body>
 </html>

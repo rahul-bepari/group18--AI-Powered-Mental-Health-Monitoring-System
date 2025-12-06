@@ -21,16 +21,17 @@ const patientData = {
 };
 
 // ===== COUNSELOR USER =====
+// ===== COUNSELOR USER =====
 const counselorData = {
     email: 'counselor@bondhu.app',
     password: 'counselor123',
     name: 'Dr. Sarah Johnson',
-    features: ['dashboard', 'counseling', 'progress'],
+    features: ['dashboard', 'counselor-sessions', 'progress'], // Changed to 'counselor-sessions'
     dashboard: {
-        avgMood: 3.9,
-        avgStress: 2.5,
-        avgSleep: 7.4,
-        wellnessScore: 80
+        patient: 9,
+        todaysAppointment: 3,  // Add underscore for consistency
+        emergency: 2,
+        complete: 80
     }
 };
 
@@ -283,21 +284,24 @@ document.querySelectorAll('.save-btn, .start-btn, .crisis-btn').forEach(btn => {
 // ===== UPDATE DASHBOARD DISPLAY =====
 function updateDashboardDisplay() {
     const patientDash = document.getElementById('patient-dashboard');
+    const counselorDash = document.getElementById('counselor-dashboard'); // Add this
     const adminDash = document.getElementById('admin-dashboard');
     const pharmacistDash = document.getElementById('pharmacist-dashboard');
     const financeDash = document.getElementById('finance-dashboard');
     
     // Hide all dashboards first
     if (patientDash) patientDash.style.display = 'none';
+    if (counselorDash) counselorDash.style.display = 'none'; // Add this
     if (adminDash) adminDash.style.display = 'none';
     if (pharmacistDash) pharmacistDash.style.display = 'none';
     if (financeDash) financeDash.style.display = 'none';
     
     if (currentUser.role === 'patient' && patientDash) patientDash.style.display = 'block';
+    if (currentUser.role === 'counselor' && counselorDash) counselorDash.style.display = 'block'; // Add this
     if (currentUser.role === 'admin' && adminDash) adminDash.style.display = 'block';
     if (currentUser.role === 'pharmacist' && pharmacistDash) pharmacistDash.style.display = 'block';
     if (currentUser.role === 'finance' && financeDash) financeDash.style.display = 'block';
-    if (currentUser.role === 'counselor' && patientDash) patientDash.style.display = 'block'; // Counselor sees patient-like dashboard
+    //if (currentUser.role === 'counselor' && patientDash) patientDash.style.display = 'block'; // Counselor sees patient-like dashboard
 }
 
 console.log('[v0] Admin features:', adminData.features);
