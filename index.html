@@ -565,7 +565,7 @@
         </div>
         
         <div class="qa-section">
-            <h3>Your AI Analysis History</h3>
+            <h3>AI Analysis</h3>
             <div class="table-header">
                 <div class="table-title"></div>
                 <div class="header-controls">
@@ -576,9 +576,10 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Analysis_ID</th>
+                        <th>Ai_Analysis_ID</th>
                         <th>DATE</th>
-                        <th>EMOTION</th>
+                        <th>sentiment values</th>
+                        <th>EMOTION classifications</th>
                         <th>RISK SCORE</th>
                         <th>ACTIONS</th>
                     </tr>
@@ -587,6 +588,7 @@
                     <tr>
                         <td>001</td>
                         <td>2024-11-18</td>
+                        <td>Positive</td>
                         <td>Stressed</td>
                         <td>65/100</td>
                         <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
@@ -667,7 +669,7 @@
 
     <!-- Recommendation History -->
     <div class="log-history" style="margin-top: 30px;">
-        <h3>Recommendation History</h3>
+        <h3>Recommendation </h3>
                     <div class="table-header">
                         <div class="table-title"></div>
                         <div class="header-controls">
@@ -928,10 +930,12 @@
 
     <!-- Crisis Alert Log -->
     <div class="log-history" style="margin-top: 30px;">
-        <h3>Crisis Alert Log</h3>
+        <h3>CrisisAlerts</h3>
         <div class="table-header">
             <div class="table-title">AI-detected and user-initiated alerts</div>
             <div class="header-controls">
+                <button class="add-btn">+ Add New</button>
+                <input type="text" class="search-input" placeholder="Search...">
                 <button class="add-btn" onclick="exportAlerts()">📥 Export Log</button>
             </div>
         </div>
@@ -939,19 +943,20 @@
             <thead>
                 <tr>
                     <th>Crisis_ID</th>
-                    <th>DATE & TIME</th>
+                    <th>alert timestamps</th>
                     <th>TYPE</th>
-                    <th>SEVERITY</th>
+                    <th>contacted counsellors</th>
                     <th>ACTION TAKEN</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>S001</td>
+                    <td>001</td>
                     <td>2024-11-18 15:45</td>
                     <td>AI Detection</td>
                     <td><span style="color: #EF4444; font-weight: bold;">High</span></td>
                     <td>Alert sent to counselor</td>
+                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
                 </tr>
                 <tr>
                     <td>002</td>
@@ -959,6 +964,46 @@
                     <td>User Initiated</td>
                     <td><span style="color: #D946EF; font-weight: bold;">Medium</span></td>
                     <td>Coping tools shown</td>
+                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>---------------------------------------------------------------------------------------------------------------------------------------------------------</h3>
+        <div class="table-header">
+            <div class="table-title">EmergencyContacts</div>
+            <div class="header-controls">
+                <button class="add-btn">+ Add New</button>
+                <input type="text" class="search-input" placeholder="Search...">
+                <button class="add-btn" onclick="exportAlerts()">📥 Export Log</button>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>helpline_id</th>
+                    <th>Name</th>
+                    <th>category</th>
+                    <th>Number</th>
+                    <th>ACTION TAKEN</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>001</td>
+                    <td>Suicide Hotline</td>
+                    <td>mental health</td>
+                    
+                    <td>01867826237</td>
+                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                </tr>
+                <tr>
+                    <td>002</td>
+                    <td>Suicide Hotline</td>
+                    <td>mental health</td>
+                    
+                    <td>9865457889767</td>
+                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
                 </tr>
             </tbody>
         </table>
@@ -1616,7 +1661,7 @@
 
                 <!-- ===== ADMIN - AI ANALYSIS LOG ===== -->
                 <div id="ai-analysis-log" class="content-section">
-                    <h2>AI Analysis Log</h2>
+                    <h2>AI Analysis</h2>
                     <div class="table-header">
                         <div class="table-title"></div>
                         <div class="header-controls">
@@ -1627,11 +1672,11 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>AI_Analysis_Log_ID</th>
+                                <th>AI_Analysis_ID</th>
                                 <th>DATE</th>
                                 <th>PATIENT</th>
                                 <th>ANALYSIS TYPE</th>
-                                <th>SCORE</th>
+                                <th>Risk scores</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
