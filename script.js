@@ -208,8 +208,10 @@ function updateFeatureVisibility() {
 // ===== NAVIGATION =====
 navItems.forEach(item => {
     item.addEventListener('click', () => {
-        if (currentUser.features.includes(item.dataset.page)) {
-            showContentSection(item.dataset.page);
+        const pageId = item.dataset.page;
+        
+        if (currentUser.features.includes(pageId)) {
+            showContentSection(pageId);
             updateActiveNav(item);
         }
     });
@@ -302,6 +304,28 @@ function updateDashboardDisplay() {
     if (currentUser.role === 'pharmacist' && pharmacistDash) pharmacistDash.style.display = 'block';
     if (currentUser.role === 'finance' && financeDash) financeDash.style.display = 'block';
     //if (currentUser.role === 'counselor' && patientDash) patientDash.style.display = 'block'; // Counselor sees patient-like dashboard
+}
+
+function updateCounselorDashboard() {
+    if (currentUser.role === 'counselor' && currentUser.data) {
+        const dash = currentUser.data.dashboard;
+        document.getElementById('counselor-name').textContent = currentUser.name.split(' ')[1] || currentUser.name;
+        
+        // Update stats if you have elements with these IDs
+        const stats = {
+            'active-patients': dash.patient,
+            'today-appointments': dash.todaysappointment || dash.todaysAppointment,
+            'emergency-alerts': dash.emergency,
+            'sessions-completed': dash.complete + '%'
+        };
+        
+        for (const [key, value] of Object.entries(stats)) {
+            const element = document.getElementById(key);
+            if (element) {
+                element.textContent = value;
+            }
+        }
+    }
 }
 
 console.log('[v0] Admin features:', adminData.features);

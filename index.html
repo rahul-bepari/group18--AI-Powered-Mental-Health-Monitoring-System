@@ -490,6 +490,41 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div class="log-history">
+                        <div class="table-header">
+                            <div class="table-title">Users Table</div>
+                            <div class="header-controls">
+                                <button class="add-btn">+ Add New</button>
+                                <input type="text" class="search-input" placeholder="Search...">
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Users_ID</th>
+                                    <th>Name</th>  
+                                    <th>DATE & TIME</th>
+                                    <th>Contact details</th>
+                                    <th>Preferences</th>
+                                    <th>emergency contacts</th>
+                                    <th>ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>001</td>
+                                    <td>Jhon Smith</td>
+                                    <td>2024-11-18 08:00</td>
+                                    <td>01636746209</td>
+                                    <td>need good session</td>
+                                    <td>01722837654</td>
+                                    
+                                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- ===== PATIENT - AI ANALYSIS ===== -->
@@ -679,7 +714,7 @@
                     <div class="counseling-section">
                         <h3>Book a Session</h3>
                         <button class="save-btn">Book Session</button>
-                        <h3 style="margin-top: 30px;">My Session History</h3>
+                        <h3 style="margin-top: 30px;">Counsellors Table</h3>
                         <div class="table-header">
                             <div class="table-title"></div>
                             <div class="header-controls">
@@ -690,11 +725,12 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>My_Session_ID</th>
+                                    <th>Counsellors_ID</th>
                                     <th>DATE</th>
                                     <th>COUNSELOR</th>
-                                    <th>DURATION</th>
-                                    <th>STATUS</th>
+                                    <th>Specialization</th>
+                                    <th>schedule</th>
+                                    <th>contact</th>
                                     <th>ACTIONS</th>
                                 </tr>
                             </thead>
@@ -703,8 +739,10 @@
                                     <td>001</td>
                                     <td>2024-11-20 10:00</td>
                                     <td>Dr. Sarah Johnson</td>
-                                    <td>60 min</td>
-                                    <td><span class="status-approved">Completed</span></td>
+                                    <td>Pastoral</td>
+                                    <td>Sunday</td>
+                                    <td>01766836209</td>
+                                    
                                     <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
                                 </tr>
                             </tbody>
@@ -734,7 +772,7 @@
 
 <!-- Feedback History -->
 <div class="log-history" style="margin-top: 30px;">
-    <h3>Feedback History</h3>
+    <h3>Sessions Table</h3>
                         <div class="table-header">
                         <div class="table-title"></div>
                         <div class="header-controls">
@@ -745,11 +783,11 @@
     <table>
         <thead>
             <tr>
-                <th>Feedback_ID</th>
                 <th>My_Session_ID</th>
-                <th>RATING</th>
+                <th>Counsellors_ID</th>
+                <th>Time</th>
                 <th>FEEDBACK</th>
-                <th>DATE</th>
+                <th>session notes</th>
                 <th>ACTIONS</th>
             </tr>
         </thead>
@@ -757,9 +795,9 @@
             <tr>
                 <td>001</td>
                 <td>001</td>
-                <td>★★★★★</td>
+                <td>Sunday</td>
                 <td>Very helpful session</td>
-                <td>2024-11-20</td>
+                <td>see you next session</td>
                 <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
             </tr>
         </tbody>
@@ -770,10 +808,10 @@
 
                 <!-- ===== PATIENT - PROGRESS ===== -->
                 <div id="progress" class="content-section">
-                    <h2>Progress Tracking</h2>
-                    <h3>Progress Metrics</h3>
+                    
+                    <h3>Counsellor Feedback & Progress Tracking</h3>
                     <div class="table-header">
-                        <div class="table-title"></div>
+                        <div class="table-title">Progress</div>
                         <div class="header-controls">
                             <button class="add-btn">+ Add New</button>
                             <input type="text" class="search-input" placeholder="Search...">
@@ -797,6 +835,36 @@
                                 <td>Stable</td>
                                 <td>82/100</td>
                                 <td>📈 Improving</td>
+                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h2>------------------------------</h2>
+                    <div class="table-header">
+                        <div class="table-title">Feedback</div>
+                        <div class="header-controls">
+                            <button class="add-btn">+ Add New</button>
+                            <input type="text" class="search-input" placeholder="Search...">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feedback_Id</th>
+                                <th>Rating</th>
+                                <th>Feedback</th>
+                                <th>Improvement</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>001</td>
+                                <td>4.5</td>
+                                <td>good for</td>
+                                <td>need that </td>
+                                
                                 <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
                             </tr>
                         </tbody>
@@ -989,7 +1057,118 @@
                             </p>
                         </div>
                     </div>
-
+                    <div class="log-history">
+                                <div class="table-header">
+                                    <div class="table-title">Patient Sessions</div>
+                                    <div class="header-controls">
+                                        <button class="add-btn" onclick="addNewSession()">+ Add Session</button>
+                                        <input type="text" class="search-input" placeholder="Search patients...">
+                                        <select style="background: var(--dark-bg); color: var(--text-primary); border: 1px solid var(--dark-border); padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                            <option>All Status</option>
+                                            <option>Scheduled</option>
+                                            <option>Completed</option>
+                                            <option>Cancelled</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Session_ID</th>
+                                            <th>PATIENT</th>
+                                            <th>DATE & TIME</th>
+                                            <th>TYPE</th>
+                                            <th>STATUS</th>
+                                            <th>NOTES</th>
+                                            <th>ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>001</td>
+                                            <td>Alex Johnson</td>
+                                            <td>Today, 10:00 AM</td>
+                                            <td>Video Call</td>
+                                            <td>
+                                                <span class="status-approved" style="background: rgba(16, 185, 129, 0.15); color: #10B981;">Scheduled</span>
+                                            </td>
+                                            <td>Regular check-in</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <span class="action-icon" onclick="startSession('S001')" title="Start Session">▶️</span>
+                                                    <span class="action-icon" onclick="addNote('S001')" title="Add Notes">📝</span>
+                                                    <span class="action-icon" onclick="rescheduleSession('S001')" title="Reschedule">🔄</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>002</td>
+                                            <td>Maria Garcia</td>
+                                            <td>Today, 2:00 PM</td>
+                                            <td>In-person</td>
+                                            <td>
+                                                <span style="background: rgba(239, 68, 68, 0.15); color: #EF4444; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Emergency</span>
+                                            </td>
+                                            <td>High anxiety reported</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <span class="action-icon" onclick="startSession('S002')" title="Start Session">▶️</span>
+                                                    <span class="action-icon" onclick="viewPatientChart('P002')" title="View Chart">📊</span>
+                                                    <span class="action-icon" onclick="messagePatient('P002')" title="Message">💬</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>003</td>
+                                            <td>Robert Chen</td>
+                                            <td>Tomorrow, 4:30 PM</td>
+                                            <td>Phone Call</td>
+                                            <td>
+                                                <span class="status-pending">Confirmed</span>
+                                            </td>
+                                            <td>Follow-up session</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <span class="action-icon" onclick="remindPatient('S003')" title="Send Reminder">🔔</span>
+                                                    <span class="action-icon" onclick="rescheduleSession('S003')" title="Reschedule">🔄</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>004</td>
+                                            <td>Sarah Williams</td>
+                                            <td>2024-11-18, 11:00 AM</td>
+                                            <td>Video Call</td>
+                                            <td>
+                                                <span style="background: rgba(6, 182, 212, 0.15); color: #06B6D4; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Completed</span>
+                                            </td>
+                                            <td>Discussed sleep issues</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <span class="action-icon" onclick="viewNotes('S004')" title="View Notes">👁️</span>
+                                                    <span class="action-icon" onclick="downloadReport('S004')" title="Download">📥</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>005</td>
+                                            <td>James Wilson</td>
+                                            <td>2024-11-20, 3:00 PM</td>
+                                            <td>In-person</td>
+                                            <td>
+                                                <span style="background: rgba(156, 163, 175, 0.15); color: #9CA3AF; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Cancelled</span>
+                                            </td>
+                                            <td>Patient rescheduled</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <span class="action-icon" onclick="rebookSession('S005')" title="Rebook">📅</span>
+                                                    <span class="action-icon" onclick="archiveSession('S005')" title="Archive">🗄️</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                     <!-- Today's Sessions -->
                     <div class="chart-card" style="margin-top: 24px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
