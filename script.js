@@ -1,334 +1,510 @@
-// ===== USER DATA - ORGANIZED BY USER TYPE AND FEATURES =====
+// ===== CRUD OPERATIONS FOR ALL TABLES =====
 
-// ===== PATIENT USER =====
-const patientData = {
-    email: 'patientuser@bondhu.app',
-    password: 'patient123',
-    name: 'Patient User',
-    features: ['dashboard', 'daily-log', 'ai-analysis', 'recommendations', 'counseling', 'progress', 'pharmacy', 'crisis-support'],
-    dashboard: {
-        avgMood: 4.1,
-        avgStress: 2.8,
-        avgSleep: 7.6,
-        wellnessScore: 82
-    },
-    dailyLog: {
-        history: [
-            { date: '2024-11-18 08:00', mood: 4, stress: 2, sleep: 8, notes: 'Felt productive and calm.' },
-            { date: '2024-11-17 08:30', mood: 3, stress: 3, sleep: 7, notes: 'A bit stressed about work, but managed.' }
-        ]
+// ===== PATIENT CRUD =====
+async function createPatient(patientData) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/patient.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(patientData)
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Error creating patient:', error);
+        return { status: 'error', message: error.message };
     }
-};
+}
 
-// ===== COUNSELOR USER =====
-// ===== COUNSELOR USER =====
-const counselorData = {
-    email: 'counselor@bondhu.app',
-    password: 'counselor123',
-    name: 'Dr. Sarah Johnson',
-    features: ['dashboard', 'counselor-sessions', 'progress'], // Changed to 'counselor-sessions'
-    dashboard: {
-        patient: 9,
-        todaysAppointment: 3,  // Add underscore for consistency
-        emergency: 2,
-        complete: 80
+async function updatePatient(patientId, patientData) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/patient.php`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ...patientData, Patient_ID: patientId })
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Error updating patient:', error);
+        return { status: 'error', message: error.message };
     }
-};
+}
 
-// ===== ADMIN USER =====
-const adminData = {
-    email: 'admin@bondhu.app',
-    password: 'admin123',
-    name: 'Admin',
-    features: ['dashboard', 'user-management', 'manage-counselors', 'all-sessions', 'all-daily-logs', 'ai-analysis-log', 'content', 'crisis-log'],
-    dashboard: {
-        totalUsers: 1254,
-        activeCounselors: 12,
-        sessionsWeek: 88,
-        crisisAlerts: 3
-    },
-    userManagement: {
-        users: [
-            { name: 'Patient User', email: 'patientuser@bondhu.app', role: 'patient', status: 'Active' },
-            { name: 'Dr. Sarah Johnson', email: 'counselor@bondhu.app', role: 'counselor', status: 'Active' },
-            { name: 'Admin', email: 'admin@bondhu.app', role: 'admin', status: 'Active' },
-            { name: 'Pharmacist', email: 'pharmacist@bondhu.app', role: 'pharmacist', status: 'Active' },
-            { name: 'Finance Manager', email: 'finance@bondhu.app', role: 'finance', status: 'Active' }
-        ]
-    },
-    manageCounselors: {
-        counselors: [
-            { name: 'Dr. Sarah Johnson', specialization: 'Anxiety & Stress', activePatients: 8, sessions: 12 }
-        ]
-    },
-    allSessions: {
-        sessions: [
-            { date: '2024-11-20 10:00', patient: 'Patient User', counselor: 'Dr. Sarah Johnson', duration: '60 min', status: 'Completed' }
-        ]
-    },
-    allDailyLogs: {
-        logs: [
-            { date: '2024-11-18 08:00', patient: 'Patient User', mood: 4, stress: 2, sleep: 8, notes: 'Felt productive and calm.' }
-        ]
-    },
-    aiAnalysisLog: {
-        logs: [
-            { date: '2024-11-18 09:30', patient: 'Patient User', analysisType: 'Mood Pattern Analysis', score: '82/100', status: 'Completed' }
-        ]
-    },
-    content: {
-        articles: [
-            { title: 'Stress Management Techniques', type: 'Article', created: '2024-11-15', status: 'Published' }
-        ]
-    },
-    crisisLog: {
-        logs: [
-            { date: '2024-11-18 15:45', patient: 'Patient User', severity: 'Medium', status: 'Resolved', assignedTo: 'Dr. Sarah Johnson' }
-        ]
+async function deletePatient(patientId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/patient.php`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ Patient_ID: patientId })
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Error deleting patient:', error);
+        return { status: 'error', message: error.message };
     }
-};
+}
 
-// ===== PHARMACIST USER =====
-const pharmacistData = {
-    email: 'pharmacist@bondhu.app',
-    password: 'pharmacist123',
-    name: 'Pharmacist',
-    features: ['dashboard', 'prescription-queue'],
-    dashboard: {
-        pendingPrescriptions: 24,
-        approvedToday: 18,
-        outForDelivery: 12,
-        delivered: 156
-    },
-    prescriptionQueue: [
-        { date: '2024-07-21', patient: 'Demo User', medication: 'Propranolol', dosage: '10mg', status: 'Approved' },
-        { date: '2024-07-21', patient: 'John Smith', medication: 'Lexapro', dosage: '20mg', status: 'Pending' },
-        { date: '2024-07-20', patient: 'Jane Doe', medication: 'Xanax', dosage: '0.5mg', status: 'Out for Delivery' },
-        { date: '2024-07-15', patient: 'Demo User', medication: 'Sertraline', dosage: '50mg', status: 'Delivered' }
-    ]
-};
+// ===== DAILY LOGS CRUD =====
+async function createDailyLog(logData) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/dailylogs.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(logData)
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Error creating daily log:', error);
+        return { status: 'error', message: error.message };
+    }
+}
 
-// ===== FINANCE USER =====
-const financeData = {
-    email: 'finance@bondhu.app',
-    password: 'finance123',
-    name: 'Finance Manager',
-    features: ['dashboard', 'billing-dashboard'],
-    dashboard: {
-        revenueMonth: 10560,
-        outstandingInvoices: 1320
-    },
-    billingRecords: [
-        { date: '2024-07-22', patient: 'Demo User', counselor: 'Dr. Emily Carter', amount: 120, status: 'Paid' },
-        { date: '2024-07-21', patient: 'Jane Smith', counselor: 'Dr. Ben Adams', amount: 120, status: 'Paid' },
-        { date: '2024-07-19', patient: 'John Doe', counselor: 'Dr. Emily Carter', amount: 120, status: 'Unpaid' }
-    ]
-};
+// ===== MODAL MANAGEMENT =====
+let currentModal = null;
+let currentTable = null;
+let currentEditId = null;
 
-// ===== CONSOLIDATED USER DATA =====
-const userData = {
-    patient: patientData,
-    counselor: counselorData,
-    admin: adminData,
-    pharmacist: pharmacistData,
-    finance: financeData
-};
+function showModal(tableName, action = 'add', data = null) {
+    currentTable = tableName;
+    currentEditId = data ? data.id : null;
+    
+    // Create modal HTML based on table
+    const modalHTML = getModalHTML(tableName, action, data);
+    
+    // Create modal element
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal">
+            <div class="modal-header">
+                <h3>${action === 'add' ? 'Add New' : 'Edit'} ${getTableTitle(tableName)}</h3>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                ${modalHTML}
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn-primary" onclick="save${tableName.charAt(0).toUpperCase() + tableName.slice(1)}()">
+                    ${action === 'add' ? 'Save' : 'Update'}
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    currentModal = modal;
+    
+    // Add CSS if not exists
+    if (!document.querySelector('#modal-styles')) {
+        const style = document.createElement('style');
+        style.id = 'modal-styles';
+        style.textContent = `
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+            .modal {
+                background: var(--dark-card);
+                border-radius: 8px;
+                width: 500px;
+                max-width: 90%;
+                max-height: 90vh;
+                overflow-y: auto;
+                border: 1px solid var(--dark-border);
+            }
+            .modal-header {
+                padding: 20px;
+                border-bottom: 1px solid var(--dark-border);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .modal-header h3 {
+                margin: 0;
+                color: var(--text-primary);
+            }
+            .close-modal {
+                font-size: 24px;
+                cursor: pointer;
+                color: var(--text-secondary);
+            }
+            .modal-body {
+                padding: 20px;
+            }
+            .modal-footer {
+                padding: 20px;
+                border-top: 1px solid var(--dark-border);
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
+            }
+            .form-group {
+                margin-bottom: 15px;
+            }
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                color: var(--text-primary);
+                font-weight: 500;
+            }
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                width: 100%;
+                padding: 8px 12px;
+                background: var(--dark-bg);
+                border: 1px solid var(--dark-border);
+                border-radius: 4px;
+                color: var(--text-primary);
+                font-size: 14px;
+            }
+            .btn-primary {
+                background: var(--primary);
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-weight: 500;
+            }
+            .btn-secondary {
+                background: var(--dark-border);
+                color: var(--text-primary);
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-weight: 500;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
 
-let currentUser = null;
+function closeModal() {
+    if (currentModal) {
+        currentModal.remove();
+        currentModal = null;
+        currentTable = null;
+        currentEditId = null;
+    }
+}
 
-// ===== DOM ELEMENTS =====
-const loginPage = document.getElementById('login-page');
-const dashboardPage = document.getElementById('dashboard-page');
-const loginForm = document.getElementById('login-form');
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
-const roleButtons = document.querySelectorAll('.role-btn');
-const navItems = document.querySelectorAll('.nav-item');
-const contentSections = document.querySelectorAll('.content-section');
-const logoutBtn = document.getElementById('logout-btn');
-const userGreeting = document.getElementById('user-greeting');
+function getTableTitle(tableName) {
+    const titles = {
+        'patient': 'Patient',
+        'dailylog': 'Daily Log',
+        'counsellor': 'Counselor',
+        'session': 'Session',
+        'payment': 'Payment',
+        'feedback': 'Feedback',
+        'analysis': 'AI Analysis',
+        'recommendation': 'Recommendation',
+        'crisis': 'Crisis Alert',
+        'caregiver': 'Caregiver'
+    };
+    return titles[tableName] || tableName;
+}
 
-let selectedRole = null;
-
-// ===== ROLE SELECTION =====
-roleButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        roleButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        selectedRole = btn.dataset.role;
+function getModalHTML(tableName, action, data) {
+    const forms = {
+        'patient': `
+            <div class="form-group">
+                <label>Full Name *</label>
+                <input type="text" id="modal-name" value="${data?.Name || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Age *</label>
+                <input type="number" id="modal-age" value="${data?.Age || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Gender *</label>
+                <select id="modal-gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male" ${data?.Gender === 'Male' ? 'selected' : ''}>Male</option>
+                    <option value="Female" ${data?.Gender === 'Female' ? 'selected' : ''}>Female</option>
+                    <option value="Other" ${data?.Gender === 'Other' ? 'selected' : ''}>Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Contact Number *</label>
+                <input type="text" id="modal-contact" value="${data?.Contact || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Email *</label>
+                <input type="email" id="modal-email" value="${data?.Email || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <input type="text" id="modal-address" value="${data?.address || ''}">
+            </div>
+            <div class="form-group">
+                <label>Emergency Contact *</label>
+                <input type="text" id="modal-emergency" value="${data?.emergencyContact || ''}" required>
+            </div>
+        `,
         
-        const user = userData[selectedRole];
-        emailInput.value = user.email;
-        passwordInput.value = user.password;
-    });
-});
+        'dailylog': `
+            <div class="form-group">
+                <label>Patient *</label>
+                <select id="modal-patient-id" required>
+                    <option value="">Select Patient</option>
+                    <!-- Will be populated with patients -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Mood *</label>
+                <select id="modal-mood" required>
+                    <option value="">Select Mood</option>
+                    <option value="Very Sad" ${data?.Mood === 'Very Sad' ? 'selected' : ''}>😢 Very Sad</option>
+                    <option value="Sad" ${data?.Mood === 'Sad' ? 'selected' : ''}>😔 Sad</option>
+                    <option value="Neutral" ${data?.Mood === 'Neutral' ? 'selected' : ''}>😐 Neutral</option>
+                    <option value="Happy" ${data?.Mood === 'Happy' ? 'selected' : ''}>😊 Happy</option>
+                    <option value="Very Happy" ${data?.Mood === 'Very Happy' ? 'selected' : ''}>😄 Very Happy</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Stress Level (1-10) *</label>
+                <input type="range" id="modal-stress" min="1" max="10" value="${data?.StressLevel || 5}">
+                <span id="stress-value">${data?.StressLevel || 5}</span>
+            </div>
+            <div class="form-group">
+                <label>Sleep Hours *</label>
+                <input type="number" id="modal-sleep" min="0" max="24" value="${data?.SleepHours || 7}" required>
+            </div>
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea id="modal-notes" rows="3">${data?.Notes || ''}</textarea>
+            </div>
+        `,
+        
+        'counsellor': `
+            <div class="form-group">
+                <label>Full Name *</label>
+                <input type="text" id="modal-counselor-name" value="${data?.Name || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Specialization *</label>
+                <input type="text" id="modal-specialization" value="${data?.Specialization || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Contact *</label>
+                <input type="text" id="modal-counselor-contact" value="${data?.Contact || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Available Day *</label>
+                <input type="date" id="modal-available-day" value="${data?.AvailableDay || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Start Time *</label>
+                <input type="time" id="modal-start-time" value="${data?.StartTime || '09:00'}" required>
+            </div>
+            <div class="form-group">
+                <label>End Time *</label>
+                <input type="time" id="modal-end-time" value="${data?.EndTime || '17:00'}" required>
+            </div>
+        `
+    };
+    
+    return forms[tableName] || `<p>Form for ${tableName} not implemented yet</p>`;
+}
 
-// ===== LOGIN FORM =====
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+// ===== SAVE FUNCTIONS FOR EACH TABLE =====
+async function savePatient() {
+    const patientData = {
+        Name: document.getElementById('modal-name').value,
+        Age: document.getElementById('modal-age').value,
+        Gender: document.getElementById('modal-gender').value,
+        Contact: document.getElementById('modal-contact').value,
+        address: document.getElementById('modal-address').value,
+        Email: document.getElementById('modal-email').value,
+        emergencyContact: document.getElementById('modal-emergency').value
+    };
     
-    if (!selectedRole) {
-        alert('Please select a user role');
-        return;
-    }
-    
-    const user = userData[selectedRole];
-    if (emailInput.value === user.email && passwordInput.value === user.password) {
-        currentUser = {
-            role: selectedRole,
-            name: user.name,
-            features: user.features,
-            data: user
-        };
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        showDashboard();
+    let result;
+    if (currentEditId) {
+        result = await updatePatient(currentEditId, patientData);
     } else {
-        alert('Invalid credentials');
+        result = await createPatient(patientData);
     }
-});
-
-// ===== SHOW DASHBOARD =====
-function showDashboard() {
-    loginPage.style.display = 'none';
-    dashboardPage.style.display = 'flex';
-    userGreeting.textContent = `Welcome, ${currentUser.name}`;
-    updateFeatureVisibility();
-    updateDashboardDisplay();
-    showContentSection(currentUser.features[0]);
+    
+    if (result.status === 'success') {
+        alert(result.message);
+        closeModal();
+        // Reload patients table
+        if (currentUser.role === 'admin') {
+            await loadAdminData();
+        }
+    } else {
+        alert('Error: ' + result.message);
+    }
 }
 
-// ===== UPDATE FEATURE VISIBILITY =====
-function updateFeatureVisibility() {
-    navItems.forEach(item => {
-        const shouldShow = currentUser.features.includes(item.dataset.page);
-        item.style.display = shouldShow ? 'flex' : 'none';
-    });
+async function saveDailylog() {
+    const logData = {
+        Patient_ID: document.getElementById('modal-patient-id').value,
+        Mood: document.getElementById('modal-mood').value,
+        StressLevel: document.getElementById('modal-stress').value,
+        SleepHours: document.getElementById('modal-sleep').value,
+        Notes: document.getElementById('modal-notes').value
+    };
+    
+    const result = await createDailyLog(logData);
+    if (result.status === 'success') {
+        alert(result.message);
+        closeModal();
+    } else {
+        alert('Error: ' + result.message);
+    }
 }
 
-// ===== NAVIGATION =====
-navItems.forEach(item => {
-    item.addEventListener('click', () => {
-        const pageId = item.dataset.page;
-        
-        if (currentUser.features.includes(pageId)) {
-            showContentSection(pageId);
-            updateActiveNav(item);
+// ===== SETUP TABLE BUTTONS =====
+function setupTableButtons() {
+    // Add button click handlers
+    document.querySelectorAll('.add-btn').forEach(btn => {
+        if (!btn.hasAttribute('data-listener')) {
+            btn.setAttribute('data-listener', 'true');
+            btn.addEventListener('click', function() {
+                const tableId = this.closest('.log-history').querySelector('table').id || 
+                               this.closest('.content-section').id;
+                const tableName = tableId.replace('-table', '').replace('all-', '');
+                showModal(tableName, 'add');
+            });
         }
     });
-});
-
-// ===== SHOW CONTENT SECTION =====
-function showContentSection(sectionId) {
-    contentSections.forEach(s => s.classList.remove('active'));
-    const section = document.getElementById(sectionId);
-    if (section) {
-        section.classList.add('active');
-    }
-}
-
-// ===== UPDATE ACTIVE NAV =====
-function updateActiveNav(item) {
-    navItems.forEach(i => i.classList.remove('active'));
-    item.classList.add('active');
-}
-
-// ===== LOGOUT =====
-logoutBtn.addEventListener('click', () => {
-    if (confirm('Are you sure you want to logout?')) {
-        currentUser = null;
-        localStorage.removeItem('currentUser');
-        loginForm.reset();
-        roleButtons.forEach(b => b.classList.remove('active'));
-        loginPage.style.display = 'flex';
-        dashboardPage.style.display = 'none';
-    }
-});
-
-// ===== SLIDER UPDATES =====
-document.querySelectorAll('.mood-slider').forEach(slider => {
-    slider.addEventListener('input', e => {
-        const faces = ['😢', '😔', '😊', '😄', '🤩'];
-        e.target.nextElementSibling.textContent = faces[e.target.value - 1];
-    });
-});
-
-document.querySelectorAll('.stress-slider').forEach(slider => {
-    slider.addEventListener('input', e => {
-        e.target.nextElementSibling.textContent = e.target.value + '/5';
-    });
-});
-
-document.querySelectorAll('.sleep-slider').forEach(slider => {
-    slider.addEventListener('input', e => {
-        e.target.nextElementSibling.textContent = e.target.value + ' hrs';
-    });
-});
-
-// ===== INITIALIZE ON LOAD =====
-window.addEventListener('load', () => {
-    const saved = localStorage.getItem('currentUser');
-    if (saved) {
-        const parsed = JSON.parse(saved);
-        currentUser = { ...parsed, data: userData[parsed.role] };
-        showDashboard();
-    }
-});
-
-// ===== BUTTON LISTENERS =====
-document.querySelectorAll('.save-btn, .start-btn, .crisis-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        if (e.target.textContent !== 'Logout' && e.target.textContent !== 'Sign in as Patient User') {
-            alert('Action completed!');
+    
+    // Edit button click handlers
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('action-icon') && e.target.textContent.includes('✏️')) {
+            const row = e.target.closest('tr');
+            const table = row.closest('table');
+            const tableName = table.id ? table.id.replace('-table', '').replace('all-', '') : 'patient';
+            const id = row.cells[0].textContent;
+            
+            // Get row data
+            const rowData = {
+                id: id,
+                Name: row.cells[1]?.textContent || '',
+                Age: row.cells[2]?.textContent || '',
+                Gender: row.cells[3]?.textContent || '',
+                Contact: row.cells[4]?.textContent || '',
+                Email: row.cells[5]?.textContent || ''
+            };
+            
+            showModal(tableName, 'edit', rowData);
         }
-    });
-});
-
-// ===== UPDATE DASHBOARD DISPLAY =====
-function updateDashboardDisplay() {
-    const patientDash = document.getElementById('patient-dashboard');
-    const counselorDash = document.getElementById('counselor-dashboard'); // Add this
-    const adminDash = document.getElementById('admin-dashboard');
-    const pharmacistDash = document.getElementById('pharmacist-dashboard');
-    const financeDash = document.getElementById('finance-dashboard');
-    
-    // Hide all dashboards first
-    if (patientDash) patientDash.style.display = 'none';
-    if (counselorDash) counselorDash.style.display = 'none'; // Add this
-    if (adminDash) adminDash.style.display = 'none';
-    if (pharmacistDash) pharmacistDash.style.display = 'none';
-    if (financeDash) financeDash.style.display = 'none';
-    
-    if (currentUser.role === 'patient' && patientDash) patientDash.style.display = 'block';
-    if (currentUser.role === 'counselor' && counselorDash) counselorDash.style.display = 'block'; // Add this
-    if (currentUser.role === 'admin' && adminDash) adminDash.style.display = 'block';
-    if (currentUser.role === 'pharmacist' && pharmacistDash) pharmacistDash.style.display = 'block';
-    if (currentUser.role === 'finance' && financeDash) financeDash.style.display = 'block';
-    //if (currentUser.role === 'counselor' && patientDash) patientDash.style.display = 'block'; // Counselor sees patient-like dashboard
-}
-
-function updateCounselorDashboard() {
-    if (currentUser.role === 'counselor' && currentUser.data) {
-        const dash = currentUser.data.dashboard;
-        document.getElementById('counselor-name').textContent = currentUser.name.split(' ')[1] || currentUser.name;
         
-        // Update stats if you have elements with these IDs
-        const stats = {
-            'active-patients': dash.patient,
-            'today-appointments': dash.todaysappointment || dash.todaysAppointment,
-            'emergency-alerts': dash.emergency,
-            'sessions-completed': dash.complete + '%'
-        };
-        
-        for (const [key, value] of Object.entries(stats)) {
-            const element = document.getElementById(key);
-            if (element) {
-                element.textContent = value;
+        // Delete button
+        if (e.target.classList.contains('action-icon') && e.target.textContent.includes('🗑️')) {
+            const row = e.target.closest('tr');
+            const id = row.cells[0].textContent;
+            const table = row.closest('table');
+            const tableName = table.id ? table.id.replace('-table', '').replace('all-', '') : 'patient';
+            
+            if (confirm(`Are you sure you want to delete this ${getTableTitle(tableName)}?`)) {
+                deleteRecord(tableName, id, row);
             }
         }
-    }
+    });
 }
 
-console.log('[v0] Admin features:', adminData.features);
-
-console.log('[v0] Current user role:', currentUser?.role);
-console.log('[v0] Features for this user:', currentUser?.features);
+async function deleteRecord(tableName, id, rowElement) {
+    try {
+        let result;
+        switch(tableName) {
+            case 'patient':
+                result = await deletePatient(id);
+                break;
+            // Add other tables here
+            default:
+                result = { status: 'error', message: 'Delete not implemented for this table' };
+        }
+        
+        if (result.status === 'success') {
+            alert(result.message);
+            rowElement.remove();
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Delete error:', error);
+        alert('Delete failed: ' + error.message);
+    }
+}
+// Save record (add or edit)
+document.getElementById('record-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData();
+    formData.append('action', currentAction);
+    formData.append('table', currentTable);
+    
+    if (currentAction === 'edit') {
+        formData.append('id', currentRecordId);
+    }
+    
+    // Get all form values
+    const inputs = document.querySelectorAll('#form-fields input, #form-fields textarea, #form-fields select');
+    inputs.forEach(input => {
+        if (input.value.trim() !== '') {
+            formData.append(input.name, input.value);
+        }
+    });
+    
+    // Show loading
+    const saveBtn = document.querySelector('#record-form .btn-primary');
+    const originalText = saveBtn.textContent;
+    saveBtn.textContent = 'Saving...';
+    saveBtn.disabled = true;
+    
+    try {
+        const response = await fetch('table_crud.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            alert('✅ Record saved successfully!');
+            closeModal();
+            loadTableData(currentTable);
+        } else {
+            alert('❌ Error: ' + data.message);
+            console.error('Save error:', data);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('❌ Network error. Check console for details.');
+    } finally {
+        // Restore button
+        saveBtn.textContent = originalText;
+        saveBtn.disabled = false;
+    }
+});
+// ===== INITIALIZE =====
+document.addEventListener('DOMContentLoaded', function() {
+    setupTableButtons();
+    
+    // Also setup on section changes
+    navItems.forEach(item => {
+        item.addEventListener('click', function() {
+            setTimeout(setupTableButtons, 100);
+        });
+    });
+});

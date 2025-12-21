@@ -4,6 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bondhu - Mental Health Monitoring System</title>
+    <style>
+        /* ADD THIS CSS FOR MODAL VISIBILITY */
+        #crud-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .modal-content h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-content input,
+        .modal-content textarea,
+        .modal-content select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        
+        .modal-content label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -455,260 +531,235 @@
                             <label>Any notes for today?</label>
                             <textarea placeholder="e.g., Had a great meeting at work..." rows="4"></textarea>
                         </div>
-                        <button class="save-btn">Save Log</button>
+                        <button class="save-btn" onclick="saveDailyLog()">Save Log</button>
                     </div>
+                    
+                    <!-- DAILY LOGS TABLE - UPDATED TO MATCH DATABASE -->
                     <div class="log-history">
                         <div class="table-header">
-                            <div class="table-title">DailyLogs table</div>
+                            <div class="table-title">Daily Logs</div>
                             <div class="header-controls">
-                                <button class="add-btn">+ Add New</button>
-                                <input type="text" class="search-input" placeholder="Search...">
+                                <button class="add-btn" onclick="openAddModal('dailylogs')">+ Add New</button>
+                                <input type="text" class="search-input" placeholder="Search..." onkeyup="searchTable('dailylogs', this.value)">
                             </div>
                         </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>log_ID</th>  
-                                    <th>DATE & TIME</th>
-                                    <th>MOOD</th>
-                                    <th>STRESS</th>
-                                    <th>SLEEP (HRS)</th>
-                                    <th>Notes</th>
-                                    <th>ACTIONS</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>001</td>
-                                    <td>2024-11-18 08:00</td>
-                                    <td>4</td>
-                                    <td>2</td>
-                                    <td>8</td>
-                                    <td>Felling good</td>
-                                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div id="dailylogs-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>DailyLog_ID</th>
+                                        <th>Patient_ID</th>  
+                                        <th>Timestamp</th>
+                                        <th>Mood</th>
+                                        <th>StressLevel</th>
+                                        <th>SleepHours</th>
+                                        <th>Notes</th>
+                                        <th>ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be loaded here from database -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
+                    <!-- PATIENT TABLE - UPDATED TO MATCH DATABASE -->
                     <div class="log-history">
                         <div class="table-header">
-                            <div class="table-title">Users Table</div>
+                            <div class="table-title">Patients</div>
                             <div class="header-controls">
-                                <button class="add-btn">+ Add New</button>
-                                <input type="text" class="search-input" placeholder="Search...">
+                                <button class="add-btn" onclick="openAddModal('patient')">+ Add New</button>
+                                <input type="text" class="search-input" placeholder="Search..." onkeyup="searchTable('patient', this.value)">
                             </div>
                         </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Users_ID</th>
-                                    <th>Name</th>  
-                                    <th>DATE & TIME</th>
-                                    <th>Contact details</th>
-                                    <th>Preferences</th>
-                                    <th>emergency contacts</th>
-                                    <th>ACTIONS</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>001</td>
-                                    <td>Jhon Smith</td>
-                                    <td>2024-11-18 08:00</td>
-                                    <td>01636746209</td>
-                                    <td>need good session</td>
-                                    <td>01722837654</td>
-                                    
-                                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div id="patient-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Patient_ID</th>
+                                        <th>Name</th>  
+                                        <th>Age</th>
+                                        <th>Gender</th>
+                                        <th>Contact</th>
+                                        <th>Address</th>
+                                        <th>Email</th>
+                                        <th>Emergency Contact</th>
+                                        <th>ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be loaded here from database -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
                 <!-- ===== PATIENT - AI ANALYSIS ===== -->
                 <div id="ai-analysis" class="content-section">
-    <h2>AI Mood Analysis & Q&A</h2>
-    
-    <!-- Journal Analysis Section -->
-    <div class="log-form" style="margin-bottom: 30px;">
-        <div class="form-section">
-            <label><strong>Journal Entry Analysis (AI-Powered)</strong></label>
-            <textarea id="journal-entry" placeholder="Write about your day, thoughts, feelings... AI will analyze emotions and provide insights..." rows="5"></textarea>
-        </div>
-        <button onclick="analyzeJournal()" class="save-btn">Analyze with AI</button>
-        <div id="ai-results" style="margin-top: 20px; display: none;">
-            <div class="insight-card">
-                <p><strong>🤖 AI Analysis Results:</strong></p>
-                <p>📊 <strong>Emotion Detected:</strong> <span id="detected-emotion">Neutral</span></p>
-                <p>⚠️ <strong>Risk Score:</strong> <span id="risk-score">Low (15/100)</span></p>
-                <p>🔍 <strong>Keywords Found:</strong> <span id="keywords">work, stress, tired</span></p>
-                <p>💡 <strong>AI Insight:</strong> <span id="ai-insight">Your writing shows signs of work-related stress. Consider taking short breaks.</span></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- AI Chat Assistant -->
-    <div class="ai-section">
-        <div class="ai-insights">
-            <h3>AI Mental Health Assistant (Q&A)</h3>
-            <div class="chat-container" style="background: var(--dark-bg); border-radius: 8px; padding: 15px; height: 250px; overflow-y: auto; margin-bottom: 15px;">
-                <div class="chat-message ai" style="background: rgba(6, 182, 212, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 10px;">
-                    <strong>AI Assistant:</strong> Hello! I'm your mental health assistant. You can ask me about anxiety, stress management, sleep issues, or anything related to mental wellness.
-                </div>
-            </div>
-            <div class="qa-input">
-                <input type="text" id="user-question" placeholder="e.g., How to manage anxiety at work?" style="flex: 1;">
-                <button onclick="askAI()" class="save-btn" style="padding: 10px 20px;">Ask AI</button>
-            </div>
-        </div>
-        
-        <div class="qa-section">
-            <h3>AI Analysis</h3>
-            <div class="table-header">
-                <div class="table-title"></div>
-                <div class="header-controls">
-                    <button class="add-btn">+ Add New</button>
-                    <input type="text" class="search-input" placeholder="Search analysis...">
-                </div>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Ai_Analysis_ID</th>
-                        <th>DATE</th>
-                        <th>sentiment values</th>
-                        <th>EMOTION classifications</th>
-                        <th>RISK SCORE</th>
-                        <th>ACTIONS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>001</td>
-                        <td>2024-11-18</td>
-                        <td>Positive</td>
-                        <td>Stressed</td>
-                        <td>65/100</td>
-                        <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- AI Risk Dashboard -->
-    <div class="chart-card" style="margin-top: 30px;">
-        <h3>📊 AI Risk Prediction Dashboard</h3>
-        <p>Based on your last 30 days of mood & journal data</p>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;">
-            <div style="background: var(--dark-bg); padding: 15px; border-radius: 8px;">
-                <p style="color: var(--text-secondary); font-size: 13px;">Depression Risk</p>
-                <p style="font-size: 24px; font-weight: bold; color: #10B981;">Low</p>
-            </div>
-            <div style="background: var(--dark-bg); padding: 15px; border-radius: 8px;">
-                <p style="color: var(--text-secondary); font-size: 13px;">Anxiety Risk</p>
-                <p style="font-size: 24px; font-weight: bold; color: #D946EF;">Medium</p>
-            </div>
-            <div style="background: var(--dark-bg); padding: 15px; border-radius: 8px;">
-                <p style="color: var(--text-secondary); font-size: 13px;">Burnout Risk</p>
-                <p style="font-size: 24px; font-weight: bold; color: #06B6D4;">Low</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-                <!-- ===== PATIENT - RECOMMENDATIONS ===== -->
-<div id="recommendations" class="content-section">
-    <h2>Personalized Mental Health Recommendations</h2>
-    
-    <!-- Personalization Header -->
-    <div style="background: linear-gradient(90deg, rgba(217, 70, 239, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-        <p style="color: var(--text-primary); margin-bottom: 5px;">
-            <strong>📊 Based on your recent data:</strong> 
-            Avg. Mood: <span id="avg-mood-display">4.1/5</span> • 
-            Avg. Stress: <span id="avg-stress-display">2.8/5</span> • 
-            Avg. Sleep: <span id="avg-sleep-display">7.6 hrs</span>
-        </p>
-        <p style="color: var(--text-secondary); font-size: 14px;">
-            These recommendations update based on your daily logs and AI analysis.
-        </p>
-    </div>
-
-    <!-- Dynamic Recommendations Grid -->
-    <div class="recommendations-grid">
-        <!-- Mood-based Recommendation -->
-        <div class="rec-card" id="mood-recommendation">
-            <h4>🎭 Mood Enhancement</h4>
-            <p id="mood-rec-text">Your mood has been stable. Try gratitude journaling to maintain positivity.</p>
-            <button class="start-btn" onclick="startActivity('mood')">Start Activity</button>
-        </div>
-        
-        <!-- Stress-based Recommendation -->
-        <div class="rec-card" id="stress-recommendation">
-            <h4>🧘 Stress Management</h4>
-            <p id="stress-rec-text">Your stress levels are moderate. Practice 5-minute breathing exercises when stressed.</p>
-            <button class="start-btn" onclick="startActivity('stress')">Start Activity</button>
-        </div>
-        
-        <!-- Sleep-based Recommendation -->
-        <div class="rec-card" id="sleep-recommendation">
-            <h4>😴 Sleep Improvement</h4>
-            <p id="sleep-rec-text">Your sleep is good. Maintain consistent sleep schedule and avoid screens before bed.</p>
-            <button class="start-btn" onclick="startActivity('sleep')">Start Activity</button>
-        </div>
-        
-        <!-- AI Personalized Suggestion -->
-        <div class="rec-card" style="background: linear-gradient(135deg, rgba(217, 70, 239, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);">
-            <h4>🤖 AI Personal Tip</h4>
-            <p id="ai-personal-tip">Based on your journal analysis, consider talking to a counselor about work stress.</p>
-            <button class="start-btn" onclick="bookCounsellor()">Book Session</button>
-        </div>
-    </div>
-
-    <!-- Recommendation History -->
-    <div class="log-history" style="margin-top: 30px;">
-        <h3>Recommendation </h3>
-                    <div class="table-header">
-                        <div class="table-title"></div>
-                        <div class="header-controls">
-                            <button class="add-btn">+ Add New</button>
-                            <input type="text" class="search-input" placeholder="Search...">
+                    <h2>AI Mood Analysis & Q&A</h2>
+                    
+                    <!-- Journal Analysis Section -->
+                    <div class="log-form" style="margin-bottom: 30px;">
+                        <div class="form-section">
+                            <label><strong>Journal Entry Analysis (AI-Powered)</strong></label>
+                            <textarea id="journal-entry" placeholder="Write about your day, thoughts, feelings... AI will analyze emotions and provide insights..." rows="5"></textarea>
+                        </div>
+                        <button onclick="analyzeJournal()" class="save-btn">Analyze with AI</button>
+                        <div id="ai-results" style="margin-top: 20px; display: none;">
+                            <div class="insight-card">
+                                <p><strong>🤖 AI Analysis Results:</strong></p>
+                                <p>📊 <strong>Emotion Detected:</strong> <span id="detected-emotion">Neutral</span></p>
+                                <p>⚠️ <strong>Risk Score:</strong> <span id="risk-score">Low (15/100)</span></p>
+                                <p>🔍 <strong>Keywords Found:</strong> <span id="keywords">work, stress, tired</span></p>
+                                <p>💡 <strong>AI Insight:</strong> <span id="ai-insight">Your writing shows signs of work-related stress. Consider taking short breaks.</span></p>
+                            </div>
                         </div>
                     </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Recommendation_ID</th>
-                    <th>DATE</th>
-                    <th>TYPE</th>
-                    <th>RECOMMENDATION</th>
-                    <th>STATUS</th>
-                    <th>ACTIONS</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>001</td>
-                    <td>2024-11-18</td>
-                    <td>Stress Management</td>
-                    <td>Deep breathing exercise</td>
-                    <td><span class="status-approved">Completed</span></td>
-                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                </tr>
-                <tr>
-                    <td>002</td>
-                    <td>2024-11-17</td>
-                    <td>Sleep</td>
-                    <td>Reduce caffeine after 3 PM</td>
-                    <td><span class="status-pending">In Progress</span></td>
-                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+
+                    <!-- AI Chat Assistant -->
+                    <div class="ai-section">
+                        <div class="ai-insights">
+                            <h3>AI Mental Health Assistant (Q&A)</h3>
+                            <div class="chat-container" style="background: var(--dark-bg); border-radius: 8px; padding: 15px; height: 250px; overflow-y: auto; margin-bottom: 15px;">
+                                <div class="chat-message ai" style="background: rgba(6, 182, 212, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+                                    <strong>AI Assistant:</strong> Hello! I'm your mental health assistant. You can ask me about anxiety, stress management, sleep issues, or anything related to mental wellness.
+                                </div>
+                            </div>
+                            <div class="qa-input">
+                                <input type="text" id="user-question" placeholder="e.g., How to manage anxiety at work?" style="flex: 1;">
+                                <button onclick="askAI()" class="save-btn" style="padding: 10px 20px;">Ask AI</button>
+                            </div>
+                        </div>
+                        
+                        <!-- AI ANALYSIS TABLE - UPDATED TO MATCH DATABASE -->
+                        <div class="qa-section">
+                            <h3>AI Analysis Log</h3>
+                            <div class="table-header">
+                                <div class="table-title"></div>
+                                <div class="header-controls">
+                                    <button class="add-btn" onclick="openAddModal('aianalysis')">+ Add New</button>
+                                    <input type="text" class="search-input" placeholder="Search analysis..." onkeyup="searchTable('aianalysis', this.value)">
+                                </div>
+                            </div>
+                            <div id="aianalysis-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Analysis_ID</th>
+                                            <th>Patient_ID</th>
+                                            <th>SentimentScore</th>
+                                            <th>RiskScore</th>
+                                            <th>EmotionClassification</th>
+                                            <th>ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Data will be loaded here from database -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Risk Dashboard -->
+                    <div class="chart-card" style="margin-top: 30px;">
+                        <h3>📊 AI Risk Prediction Dashboard</h3>
+                        <p>Based on your last 30 days of mood & journal data</p>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;">
+                            <div style="background: var(--dark-bg); padding: 15px; border-radius: 8px;">
+                                <p style="color: var(--text-secondary); font-size: 13px;">Depression Risk</p>
+                                <p style="font-size: 24px; font-weight: bold; color: #10B981;">Low</p>
+                            </div>
+                            <div style="background: var(--dark-bg); padding: 15px; border-radius: 8px;">
+                                <p style="color: var(--text-secondary); font-size: 13px;">Anxiety Risk</p>
+                                <p style="font-size: 24px; font-weight: bold; color: #D946EF;">Medium</p>
+                            </div>
+                            <div style="background: var(--dark-bg); padding: 15px; border-radius: 8px;">
+                                <p style="color: var(--text-secondary); font-size: 13px;">Burnout Risk</p>
+                                <p style="font-size: 24px; font-weight: bold; color: #06B6D4;">Low</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== PATIENT - RECOMMENDATIONS ===== -->
+                <div id="recommendations" class="content-section">
+                    <h2>Personalized Mental Health Recommendations</h2>
+                    
+                    <!-- Personalization Header -->
+                    <div style="background: linear-gradient(90deg, rgba(217, 70, 239, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <p style="color: var(--text-primary); margin-bottom: 5px;">
+                            <strong>📊 Based on your recent data:</strong> 
+                            Avg. Mood: <span id="avg-mood-display">4.1/5</span> • 
+                            Avg. Stress: <span id="avg-stress-display">2.8/5</span> • 
+                            Avg. Sleep: <span id="avg-sleep-display">7.6 hrs</span>
+                        </p>
+                        <p style="color: var(--text-secondary); font-size: 14px;">
+                            These recommendations update based on your daily logs and AI analysis.
+                        </p>
+                    </div>
+
+                    <!-- Dynamic Recommendations Grid -->
+                    <div class="recommendations-grid">
+                        <!-- Mood-based Recommendation -->
+                        <div class="rec-card" id="mood-recommendation">
+                            <h4>🎭 Mood Enhancement</h4>
+                            <p id="mood-rec-text">Your mood has been stable. Try gratitude journaling to maintain positivity.</p>
+                            <button class="start-btn" onclick="startActivity('mood')">Start Activity</button>
+                        </div>
+                        
+                        <!-- Stress-based Recommendation -->
+                        <div class="rec-card" id="stress-recommendation">
+                            <h4>🧘 Stress Management</h4>
+                            <p id="stress-rec-text">Your stress levels are moderate. Practice 5-minute breathing exercises when stressed.</p>
+                            <button class="start-btn" onclick="startActivity('stress')">Start Activity</button>
+                        </div>
+                        
+                        <!-- Sleep-based Recommendation -->
+                        <div class="rec-card" id="sleep-recommendation">
+                            <h4>😴 Sleep Improvement</h4>
+                            <p id="sleep-rec-text">Your sleep is good. Maintain consistent sleep schedule and avoid screens before bed.</p>
+                            <button class="start-btn" onclick="startActivity('sleep')">Start Activity</button>
+                        </div>
+                        
+                        <!-- AI Personalized Suggestion -->
+                        <div class="rec-card" style="background: linear-gradient(135deg, rgba(217, 70, 239, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);">
+                            <h4>🤖 AI Personal Tip</h4>
+                            <p id="ai-personal-tip">Based on your journal analysis, consider talking to a counselor about work stress.</p>
+                            <button class="start-btn" onclick="bookCounsellor()">Book Session</button>
+                        </div>
+                    </div>
+
+                    <!-- RECOMMENDATIONS TABLE - UPDATED TO MATCH DATABASE -->
+                    <div class="log-history" style="margin-top: 30px;">
+                        <h3>Recommendations</h3>
+                        <div class="table-header">
+                            <div class="table-title"></div>
+                            <div class="header-controls">
+                                <button class="add-btn" onclick="openAddModal('recommendations')">+ Add New</button>
+                                <input type="text" class="search-input" placeholder="Search..." onkeyup="searchTable('recommendations', this.value)">
+                            </div>
+                        </div>
+                        <div id="recommendations-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Recommendation_ID</th>
+                                        <th>Patient_ID</th>
+                                        <th>TipCategory</th>
+                                        <th>Content</th>
+                                        <th>ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be loaded here from database -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- ===== PATIENT - COUNSELING ===== -->
                 <div id="counseling" class="content-section">
@@ -716,161 +767,131 @@
                     <div class="counseling-section">
                         <h3>Book a Session</h3>
                         <button class="save-btn">Book Session</button>
-                        <h3 style="margin-top: 30px;">Counsellors Table</h3>
+                        
+                        <!-- COUNSELORS TABLE - UPDATED TO MATCH DATABASE -->
+                        <h3 style="margin-top: 30px;">Counselors</h3>
                         <div class="table-header">
                             <div class="table-title"></div>
                             <div class="header-controls">
-                                <button class="add-btn">+ Add New</button>
-                                <input type="text" class="search-input" placeholder="Search...">
+                                <button class="add-btn" onclick="openAddModal('counsellors')">+ Add New</button>
+                                <input type="text" class="search-input" placeholder="Search..." onkeyup="searchTable('counsellors', this.value)">
                             </div>
                         </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Counsellors_ID</th>
-                                    <th>DATE</th>
-                                    <th>COUNSELOR</th>
-                                    <th>Specialization</th>
-                                    <th>schedule</th>
-                                    <th>contact</th>
-                                    <th>ACTIONS</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>001</td>
-                                    <td>2024-11-20 10:00</td>
-                                    <td>Dr. Sarah Johnson</td>
-                                    <td>Pastoral</td>
-                                    <td>Sunday</td>
-                                    <td>01766836209</td>
-                                    
-                                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="log-form" style="margin-top: 30px;">
-    <h3>Session Feedback</h3>
-    <div class="form-section">
-        <label>Rate Your Last Session</label>
-        <div class="rating" style="font-size: 24px; color: #FFD700;">
-            <span class="star" data-rating="1" onclick="rateSession(1)">★</span>
-            <span class="star" data-rating="2" onclick="rateSession(2)">★</span>
-            <span class="star" data-rating="3" onclick="rateSession(3)">★</span>
-            <span class="star" data-rating="4" onclick="rateSession(4)">★</span>
-            <span class="star" data-rating="5" onclick="rateSession(5)">★</span>
-        </div>
-        <p style="color: var(--text-secondary); font-size: 13px; margin-top: 5px;">
-            Selected: <span id="rating-value">0</span>/5 stars
-        </p>
-    </div>
-    <div class="form-section">
-        <label>Additional Feedback</label>
-        <textarea id="session-feedback" placeholder="How was your session? What could be improved?" rows="3"></textarea>
-    </div>
-    <button class="save-btn" onclick="submitFeedback()">Submit Feedback</button>
-</div>
-
-<!-- Feedback History -->
-<div class="log-history" style="margin-top: 30px;">
-    <h3>Sessions Table</h3>
-                        <div class="table-header">
-                        <div class="table-title"></div>
-                        <div class="header-controls">
-                            <button class="add-btn">+ Add New</button>
-                            <input type="text" class="search-input" placeholder="Search...">
+                        <div id="counsellors-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Counsellor_ID</th>
+                                        <th>Name</th>
+                                        <th>Specialization</th>
+                                        <th>Contact</th>
+                                        <th>AvailableDay</th>
+                                        <th>StartTime</th>
+                                        <th>EndTime</th>
+                                        <th>ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be loaded here from database -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>My_Session_ID</th>
-                <th>Counsellors_ID</th>
-                <th>Time</th>
-                <th>FEEDBACK</th>
-                <th>session notes</th>
-                <th>ACTIONS</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>001</td>
-                <td>001</td>
-                <td>Sunday</td>
-                <td>Very helpful session</td>
-                <td>see you next session</td>
-                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                    
+                    <!-- SESSIONS TABLE - UPDATED TO MATCH DATABASE -->
+                    <div class="log-history" style="margin-top: 30px;">
+                        <h3>Sessions</h3>
+                        <div class="table-header">
+                            <div class="table-title"></div>
+                            <div class="header-controls">
+                                <button class="add-btn" onclick="openAddModal('sessions')">+ Add New</button>
+                                <input type="text" class="search-input" placeholder="Search..." onkeyup="searchTable('sessions', this.value)">
+                            </div>
+                        </div>
+                        <div id="sessions-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Sessions_ID</th>
+                                        <th>Patient_ID</th>
+                                        <th>Counsellor_ID</th>
+                                        <th>Payment_ID</th>
+                                        <th>Day</th>
+                                        <th>StartTime</th>
+                                        <th>EndTime</th>
+                                        <th>Notes</th>
+                                        <th>ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be loaded here from database -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- FEEDBACK TABLE - UPDATED TO MATCH DATABASE -->
+                    <div class="log-history" style="margin-top: 30px;">
+                        <h3>Feedback</h3>
+                        <div class="table-header">
+                            <div class="table-title"></div>
+                            <div class="header-controls">
+                                <button class="add-btn" onclick="openAddModal('feedback')">+ Add New</button>
+                                <input type="text" class="search-input" placeholder="Search..." onkeyup="searchTable('feedback', this.value)">
+                            </div>
+                        </div>
+                        <div id="feedback-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>feedback_ID</th>
+                                        <th>Patient_ID</th>
+                                        <th>Sessions_ID</th>
+                                        <th>Rating</th>
+                                        <th>Comments</th>
+                                        <th>SubmittedDate</th>
+                                        <th>ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be loaded here from database -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                
 
                 <!-- ===== PATIENT - PROGRESS ===== -->
                 <div id="progress" class="content-section">
+                    <h2>Progress Tracking</h2>
                     
-                    <h3>Counsellor Feedback & Progress Tracking</h3>
-                    <div class="table-header">
-                        <div class="table-title">Progress</div>
-                        <div class="header-controls">
-                            <button class="add-btn">+ Add New</button>
-                            <input type="text" class="search-input" placeholder="Search...">
+                    <!-- PROGRESS METRICS TABLE - UPDATED TO MATCH DATABASE -->
+                    <div class="log-history">
+                        <div class="table-header">
+                            <div class="table-title">Progress Metrics</div>
+                            <div class="header-controls">
+                                <button class="add-btn" onclick="openAddModal('progess_metrics')">+ Add New</button>
+                                <input type="text" class="search-input" placeholder="Search..." onkeyup="searchTable('progess_metrics', this.value)">
+                            </div>
+                        </div>
+                        <div id="progess_metrics-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Sessions_ID</th>
+                                        <th>MetricName</th>
+                                        <th>Emotional Stability Score</th>
+                                        <th>Anxiety Level Score</th>
+                                        <th>Fatigue Score</th>
+                                        <th>ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be loaded here from database -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Progress_Id</th>
-                                <th>DATE</th>
-                                <th>STABILITY</th>
-                                <th>SCORE</th>
-                                <th>TREND</th>
-                                <th>ACTIONS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>001</td>
-                                <td>2024-11-18</td>
-                                <td>Stable</td>
-                                <td>82/100</td>
-                                <td>📈 Improving</td>
-                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <h2>------------------------------</h2>
-                    <div class="table-header">
-                        <div class="table-title">Feedback</div>
-                        <div class="header-controls">
-                            <button class="add-btn">+ Add New</button>
-                            <input type="text" class="search-input" placeholder="Search...">
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Feedback_Id</th>
-                                <th>Rating</th>
-                                <th>Feedback</th>
-                                <th>Improvement</th>
-                                <th>ACTIONS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>001</td>
-                                <td>4.5</td>
-                                <td>good for</td>
-                                <td>need that </td>
-                                
-                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
 
                 <!-- ===== PATIENT - PHARMACY ===== -->
@@ -886,642 +907,213 @@
                 </div>
 
                 <!-- ===== PATIENT - CRISIS SUPPORT ===== -->
-<div id="crisis-support" class="content-section">
-    <h2>Crisis Detection & Emergency Support</h2>
-    
-    <!-- AI Crisis Detection Alert -->
-    <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(217, 70, 239, 0.1) 100%); border: 1px solid #EF4444; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-        <h3 style="color: #EF4444; margin-bottom: 10px;">⚠️ AI Crisis Detection Active</h3>
-        <p style="color: var(--text-primary);">AI monitors your mood logs and journal entries for signs of distress.</p>
-        <p style="color: var(--text-secondary); font-size: 14px; margin-top: 8px;">
-            Last check: <span id="last-check">Today, 10:30 AM</span> • Status: <span style="color: #10B981;">Normal</span>
-        </p>
-    </div>
-
-    <!-- Emergency Contacts -->
-    <div class="crisis-section">
-        <div class="helpline-card">
-            <h3>Emergency Helplines</h3>
-            <p><strong>National Suicide Prevention Lifeline:</strong></p>
-            <p class="phone">1-800-273-8255</p>
-            <p><strong>Crisis Text Line:</strong></p>
-            <p class="phone">Text HOME to 741741</p>
-            <p><strong>Local Emergency:</strong></p>
-            <p class="phone">911</p>
-        </div>
-        
-        <div class="helpline-card">
-            <h3>Your Emergency Contacts</h3>
-            <div id="user-contacts">
-                <p>👤 <strong>Emergency Contact 1:</strong> John Doe - 123-456-7890</p>
-                <p>👤 <strong>Emergency Contact 2:</strong> Jane Smith - 098-765-4321</p>
-            </div>
-            <button class="save-btn" style="margin-top: 15px;" onclick="editContacts()">Edit Contacts</button>
-        </div>
-    </div>
-
-    <!-- Emergency Actions -->
-    <div style="margin-top: 30px;">
-        <h3>Immediate Support</h3>
-        <button class="crisis-btn" onclick="logCrisis('connect_counselor')">🔗 Connect with Available Counselor</button>
-        <button class="crisis-btn" style="background: #9333EA;" onclick="logCrisis('emergency_call')">📞 Call Emergency Contact</button>
-        <button class="crisis-btn" style="background: #06B6D4;" onclick="logCrisis('coping_tools')">🛠️ Show Coping Tools</button>
-    </div>
-
-    <!-- Crisis Alert Log -->
-    <div class="log-history" style="margin-top: 30px;">
-        <h3>CrisisAlerts</h3>
-        <div class="table-header">
-            <div class="table-title">AI-detected and user-initiated alerts</div>
-            <div class="header-controls">
-                <button class="add-btn">+ Add New</button>
-                <input type="text" class="search-input" placeholder="Search...">
-                <button class="add-btn" onclick="exportAlerts()">📥 Export Log</button>
-            </div>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Crisis_ID</th>
-                    <th>alert timestamps</th>
-                    <th>TYPE</th>
-                    <th>contacted counsellors</th>
-                    <th>ACTION TAKEN</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>001</td>
-                    <td>2024-11-18 15:45</td>
-                    <td>AI Detection</td>
-                    <td><span style="color: #EF4444; font-weight: bold;">High</span></td>
-                    <td>Alert sent to counselor</td>
-                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                </tr>
-                <tr>
-                    <td>002</td>
-                    <td>2024-11-15 10:20</td>
-                    <td>User Initiated</td>
-                    <td><span style="color: #D946EF; font-weight: bold;">Medium</span></td>
-                    <td>Coping tools shown</td>
-                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h3>---------------------------------------------------------------------------------------------------------------------------------------------------------</h3>
-        <div class="table-header">
-            <div class="table-title">EmergencyContacts</div>
-            <div class="header-controls">
-                <button class="add-btn">+ Add New</button>
-                <input type="text" class="search-input" placeholder="Search...">
-                <button class="add-btn" onclick="exportAlerts()">📥 Export Log</button>
-            </div>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>helpline_id</th>
-                    <th>Name</th>
-                    <th>category</th>
-                    <th>Number</th>
-                    <th>ACTION TAKEN</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>001</td>
-                    <td>Suicide Hotline</td>
-                    <td>mental health</td>
+                <div id="crisis-support" class="content-section">
+                    <h2>Crisis Detection & Emergency Support</h2>
                     
-                    <td>01867826237</td>
-                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                </tr>
-                <tr>
-                    <td>002</td>
-                    <td>Suicide Hotline</td>
-                    <td>mental health</td>
-                    
-                    <td>9865457889767</td>
-                    <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                    <!-- AI Crisis Detection Alert -->
+                    <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(217, 70, 239, 0.1) 100%); border: 1px solid #EF4444; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h3 style="color: #EF4444; margin-bottom: 10px;">⚠️ AI Crisis Detection Active</h3>
+                        <p style="color: var(--text-primary);">AI monitors your mood logs and journal entries for signs of distress.</p>
+                        <p style="color: var(--text-secondary); font-size: 14px; margin-top: 8px;">
+                            Last check: <span id="last-check">Today, 10:30 AM</span> • Status: <span style="color: #10B981;">Normal</span>
+                        </p>
+                    </div>
 
-    <!-- Coping Tools (Hidden by default) -->
-    <div id="coping-tools" style="display: none; margin-top: 20px;">
-        <h3>🛠️ Immediate Coping Tools</h3>
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-            <div style="background: var(--dark-bg); padding: 15px; border-radius: 8px;">
-                <h4>🌬️ 5-4-3-2-1 Grounding</h4>
-                <p>Name 5 things you see, 4 things you feel, 3 things you hear, 2 things you smell, 1 thing you taste.</p>
-            </div>
-            <div style="background: var(--dark-bg); padding: 15px; border-radius: 8px;">
-                <h4>💭 Positive Affirmation</h4>
-                <p>"This feeling is temporary. I have survived 100% of my worst days."</p>
-            </div>
-        </div>
-    </div>
-</div>
-                
+                    <!-- Emergency Contacts -->
+                    <div class="crisis-section">
+                        <div class="helpline-card">
+                            <h3>Emergency Helplines</h3>
+                            <p><strong>National Suicide Prevention Lifeline:</strong></p>
+                            <p class="phone">1-800-273-8255</p>
+                            <p><strong>Crisis Text Line:</strong></p>
+                            <p class="phone">Text HOME to 741741</p>
+                            <p><strong>Local Emergency:</strong></p>
+                            <p class="phone">911</p>
+                        </div>
+                        
+                        <div class="helpline-card">
+                            <h3>Your Emergency Contacts</h3>
+                            <div id="user-contacts">
+                                <p>👤 <strong>Emergency Contact 1:</strong> John Doe - 123-456-7890</p>
+                                <p>👤 <strong>Emergency Contact 2:</strong> Jane Smith - 098-765-4321</p>
+                            </div>
+                            <button class="save-btn" style="margin-top: 15px;" onclick="editContacts()">Edit Contacts</button>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Actions -->
+                    <div style="margin-top: 30px;">
+                        <h3>Immediate Support</h3>
+                        <button class="crisis-btn" onclick="logCrisis('connect_counselor')">🔗 Connect with Available Counselor</button>
+                        <button class="crisis-btn" style="background: #9333EA;" onclick="logCrisis('emergency_call')">📞 Call Emergency Contact</button>
+                        <button class="crisis-btn" style="background: #06B6D4;" onclick="logCrisis('coping_tools')">🛠️ Show Coping Tools</button>
+                    </div>
+
+                    <!-- CRISIS ALERTS TABLE - UPDATED TO MATCH DATABASE -->
+                    <div class="log-history" style="margin-top: 30px;">
+                        <h3>Crisis Alerts</h3>
+                        <div class="table-header">
+                            <div class="table-title">AI-detected and user-initiated alerts</div>
+                            <div class="header-controls">
+                                <button class="add-btn" onclick="openAddModal('crisisalerts')">+ Add New</button>
+                                <input type="text" class="search-input" placeholder="Search..." onkeyup="searchTable('crisisalerts', this.value)">
+                                <button class="add-btn" onclick="exportAlerts()">📥 Export Log</button>
+                            </div>
+                        </div>
+                        <div id="crisisalerts-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Alert_ID</th>
+                                        <th>Patient_ID</th>
+                                        <th>TeamID</th>
+                                        <th>Caregiver_ID</th>
+                                        <th>AlertTimestamp</th>
+                                        <th>Triggers</th>
+                                        <th>ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be loaded here from database -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- COUNSELOR DASHBOARD -->
                 <div id="counselor-dashboard" style="display: none;">
-                    <!-- Welcome Card -->
-                    <div style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%); border: 1px solid var(--dark-border); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <h3 style="color: var(--text-primary); margin-bottom: 8px;">Welcome back, Dr. <span id="counselor-name">Sarah Johnson</span>! 👨‍⚕️</h3>
-                                <p style="color: var(--text-secondary)">Your counseling dashboard for today</p>
-                            </div>
-                            <button class="add-btn" onclick="viewTodaySessions()" style="background: var(--secondary);">
-                                📅 View Today's Sessions
-                            </button>
-                        </div>
+                    <div class="welcome-card">
+                        <h3>Welcome back, Dr. <span id="counselor-name">Sarah Johnson</span>! 👨‍⚕️</h3>
+                        <p>Your counseling dashboard for today</p>
                     </div>
 
-                    <!-- Stats Grid for Counselor -->
                     <div class="stats-grid">
-                        <div class="stat-card" style="border-left: 4px solid #06B6D4;">
-                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                                <div style="background: rgba(6, 182, 212, 0.1); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
-                                    <span style="font-size: 20px;">👥</span>
-                                </div>
-                                <div>
-                                    <p class="stat-label">ACTIVE PATIENTS</p>
-                                    <p class="stat-value">9</p>
-                                </div>
-                            </div>
-                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">
-                                <span style="color: #10B981;">↑ 2</span> this month
-                            </p>
+                        <div class="stat-card">
+                            <p class="stat-label">ACTIVE PATIENTS</p>
+                            <p class="stat-value">9</p>
                         </div>
-                        
-                        <div class="stat-card" style="border-left: 4px solid #10B981;">
-                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                                <div style="background: rgba(16, 185, 129, 0.1); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
-                                    <span style="font-size: 20px;">📅</span>
-                                </div>
-                                <div>
-                                    <p class="stat-label">TODAY'S APPOINTMENTS</p>
-                                    <p class="stat-value">3</p>
-                                </div>
-                            </div>
-                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">
-                                Next: <span style="color: var(--primary);">10:00 AM</span>
-                            </p>
+                        <div class="stat-card">
+                            <p class="stat-label">TODAY'S APPOINTMENTS</p>
+                            <p class="stat-value">3</p>
                         </div>
-                        
-                        <div class="stat-card" style="border-left: 4px solid #EF4444;">
-                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                                <div style="background: rgba(239, 68, 68, 0.1); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
-                                    <span style="font-size: 20px;">⚠️</span>
-                                </div>
-                                <div>
-                                    <p class="stat-label">EMERGENCY ALERTS</p>
-                                    <p class="stat-value">2</p>
-                                </div>
-                            </div>
-                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">
-                                <span style="color: #EF4444;">Needs attention</span>
-                            </p>
+                        <div class="stat-card">
+                            <p class="stat-label">EMERGENCY ALERTS</p>
+                            <p class="stat-value">2</p>
                         </div>
-                        
-                        <div class="stat-card highlight" style="border-left: 4px solid #D946EF;">
-                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                                <div style="background: rgba(217, 70, 239, 0.1); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
-                                    <span style="font-size: 20px;">📊</span>
-                                </div>
-                                <div>
-                                    <p class="stat-label">SESSIONS COMPLETED</p>
-                                    <p class="stat-value">80%</p>
-                                </div>
-                            </div>
-                            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 8px;">
-                                <span style="color: #10B981;">↑ 5%</span> this month
-                            </p>
+                        <div class="stat-card highlight">
+                            <p class="stat-label">SESSIONS COMPLETED</p>
+                            <p class="stat-value">80%</p>
                         </div>
                     </div>
+                    
+                    <!-- COUNSELOR SESSIONS TABLE -->
                     <div class="log-history">
-                                <div class="table-header">
-                                    <div class="table-title">Patient Sessions</div>
-                                    <div class="header-controls">
-                                        <button class="add-btn" onclick="addNewSession()">+ Add Session</button>
-                                        <input type="text" class="search-input" placeholder="Search patients...">
-                                        <select style="background: var(--dark-bg); color: var(--text-primary); border: 1px solid var(--dark-border); padding: 6px 12px; border-radius: 6px; font-size: 12px;">
-                                            <option>All Status</option>
-                                            <option>Scheduled</option>
-                                            <option>Completed</option>
-                                            <option>Cancelled</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Session_ID</th>
-                                            <th>PATIENT</th>
-                                            <th>DATE & TIME</th>
-                                            <th>TYPE</th>
-                                            <th>STATUS</th>
-                                            <th>NOTES</th>
-                                            <th>ACTIONS</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>001</td>
-                                            <td>Alex Johnson</td>
-                                            <td>Today, 10:00 AM</td>
-                                            <td>Video Call</td>
-                                            <td>
-                                                <span class="status-approved" style="background: rgba(16, 185, 129, 0.15); color: #10B981;">Scheduled</span>
-                                            </td>
-                                            <td>Regular check-in</td>
-                                            <td>
-                                                <div class="action-icons">
-                                                    <span class="action-icon" onclick="startSession('S001')" title="Start Session">▶️</span>
-                                                    <span class="action-icon" onclick="addNote('S001')" title="Add Notes">📝</span>
-                                                    <span class="action-icon" onclick="rescheduleSession('S001')" title="Reschedule">🔄</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>002</td>
-                                            <td>Maria Garcia</td>
-                                            <td>Today, 2:00 PM</td>
-                                            <td>In-person</td>
-                                            <td>
-                                                <span style="background: rgba(239, 68, 68, 0.15); color: #EF4444; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Emergency</span>
-                                            </td>
-                                            <td>High anxiety reported</td>
-                                            <td>
-                                                <div class="action-icons">
-                                                    <span class="action-icon" onclick="startSession('S002')" title="Start Session">▶️</span>
-                                                    <span class="action-icon" onclick="viewPatientChart('P002')" title="View Chart">📊</span>
-                                                    <span class="action-icon" onclick="messagePatient('P002')" title="Message">💬</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>003</td>
-                                            <td>Robert Chen</td>
-                                            <td>Tomorrow, 4:30 PM</td>
-                                            <td>Phone Call</td>
-                                            <td>
-                                                <span class="status-pending">Confirmed</span>
-                                            </td>
-                                            <td>Follow-up session</td>
-                                            <td>
-                                                <div class="action-icons">
-                                                    <span class="action-icon" onclick="remindPatient('S003')" title="Send Reminder">🔔</span>
-                                                    <span class="action-icon" onclick="rescheduleSession('S003')" title="Reschedule">🔄</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>004</td>
-                                            <td>Sarah Williams</td>
-                                            <td>2024-11-18, 11:00 AM</td>
-                                            <td>Video Call</td>
-                                            <td>
-                                                <span style="background: rgba(6, 182, 212, 0.15); color: #06B6D4; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Completed</span>
-                                            </td>
-                                            <td>Discussed sleep issues</td>
-                                            <td>
-                                                <div class="action-icons">
-                                                    <span class="action-icon" onclick="viewNotes('S004')" title="View Notes">👁️</span>
-                                                    <span class="action-icon" onclick="downloadReport('S004')" title="Download">📥</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>005</td>
-                                            <td>James Wilson</td>
-                                            <td>2024-11-20, 3:00 PM</td>
-                                            <td>In-person</td>
-                                            <td>
-                                                <span style="background: rgba(156, 163, 175, 0.15); color: #9CA3AF; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Cancelled</span>
-                                            </td>
-                                            <td>Patient rescheduled</td>
-                                            <td>
-                                                <div class="action-icons">
-                                                    <span class="action-icon" onclick="rebookSession('S005')" title="Rebook">📅</span>
-                                                    <span class="action-icon" onclick="archiveSession('S005')" title="Archive">🗄️</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <div class="table-header">
+                            <div class="table-title">Counselor Sessions</div>
+                            <div class="header-controls">
+                                <button class="add-btn" onclick="addNewSession()">+ Add Session</button>
+                                <input type="text" class="search-input" placeholder="Search patients...">
                             </div>
-                    <!-- Today's Sessions -->
-                    <div class="chart-card" style="margin-top: 24px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                            <h3>📅 Today's Schedule</h3>
-                            <button class="add-btn" onclick="addNewSession()" style="padding: 6px 12px; font-size: 12px;">
-                                + Add Session
-                            </button>
                         </div>
-                        <table style="width: 100%;">
+                        <table>
                             <thead>
                                 <tr>
-                                    <th style="text-align: left; padding: 10px 0; color: var(--text-secondary); font-size: 12px;">TIME</th>
-                                    <th style="text-align: left; padding: 10px 0; color: var(--text-secondary); font-size: 12px;">PATIENT</th>
-                                    <th style="text-align: left; padding: 10px 0; color: var(--text-secondary); font-size: 12px;">TYPE</th>
-                                    <th style="text-align: left; padding: 10px 0; color: var(--text-secondary); font-size: 12px;">STATUS</th>
-                                    <th style="text-align: left; padding: 10px 0; color: var(--text-secondary); font-size: 12px;">ACTIONS</th>
+                                    <th>Sessions_ID</th>
+                                    <th>Patient Name</th>
+                                    <th>Date & Time</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Notes</th>
+                                    <th>ACTIONS</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr style="border-bottom: 1px solid var(--dark-border);">
-                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">10:00 AM</td>
-                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Alex Johnson</td>
-                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Regular</td>
-                                    <td style="padding: 12px 0;"><span style="background: rgba(16, 185, 129, 0.15); color: #10B981; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Scheduled</span></td>
-                                    <td style="padding: 12px 0;">
-                                        <button class="action-icon" style="padding: 4px 8px; background: var(--primary); color: white; border: none; border-radius: 4px; font-size: 11px; cursor: pointer;">Start</button>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid var(--dark-border);">
-                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">2:00 PM</td>
-                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Maria Garcia</td>
-                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Emergency</td>
-                                    <td style="padding: 12px 0;"><span style="background: rgba(239, 68, 68, 0.15); color: #EF4444; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Pending</span></td>
-                                    <td style="padding: 12px 0;">
-                                        <button class="action-icon" style="padding: 4px 8px; background: var(--secondary); color: white; border: none; border-radius: 4px; font-size: 11px; cursor: pointer;">Prepare</button>
-                                    </td>
-                                </tr>
                                 <tr>
-                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">4:30 PM</td>
-                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Robert Chen</td>
-                                    <td style="padding: 12px 0; color: var(--text-primary); font-size: 13px;">Follow-up</td>
-                                    <td style="padding: 12px 0;"><span style="background: rgba(217, 70, 239, 0.15); color: #D946EF; padding: 4px 8px; border-radius: 4px; font-size: 11px;">Confirmed</span></td>
-                                    <td style="padding: 12px 0;">
-                                        <button class="action-icon" style="padding: 4px 8px; background: var(--dark-border); color: var(--text-primary); border: none; border-radius: 4px; font-size: 11px; cursor: pointer;">Notes</button>
+                                    <td>1</td>
+                                    <td>Alex Johnson</td>
+                                    <td>Today, 10:00 AM</td>
+                                    <td>Video Call</td>
+                                    <td>Scheduled</td>
+                                    <td>Regular check-in</td>
+                                    <td>
+                                        <div class="action-icons">
+                                            <span class="action-icon" onclick="startSession('1')" title="Start Session">▶️</span>
+                                            <span class="action-icon" onclick="addNote('1')" title="Add Notes">📝</span>
+                                            <span class="action-icon" onclick="rescheduleSession('1')" title="Reschedule">🔄</span>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-
-                    <!-- Patient Progress Overview -->
-                    <div class="charts-grid" style="margin-top: 24px;">
-                        <div class="chart-card">
-                            <h3>📈 Patient Progress Overview</h3>
-                            <div style="display: flex; align-items: center; height: 200px; gap: 20px; padding: 20px 0;">
-                                <div style="flex: 1; text-align: center;">
-                                    <div style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%; background: conic-gradient(#10B981 75%, var(--dark-border) 25%); display: flex; align-items: center; justify-content: center; position: relative;">
-                                        <div style="width: 80px; height: 80px; background: var(--dark-card); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                            <span style="font-size: 20px; font-weight: bold; color: #10B981;">75%</span>
-                                        </div>
-                                    </div>
-                                    <p style="color: var(--text-secondary); font-size: 12px; margin-top: 10px;">Improving</p>
-                                </div>
-                                <div style="flex: 1; text-align: center;">
-                                    <div style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%; background: conic-gradient(#D946EF 60%, var(--dark-border) 40%); display: flex; align-items: center; justify-content: center; position: relative;">
-                                        <div style="width: 80px; height: 80px; background: var(--dark-card); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                            <span style="font-size: 20px; font-weight: bold; color: #D946EF;">60%</span>
-                                        </div>
-                                    </div>
-                                    <p style="color: var(--text-secondary); font-size: 12px; margin-top: 10px;">Stable</p>
-                                </div>
-                                <div style="flex: 1; text-align: center;">
-                                    <div style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%; background: conic-gradient(#EF4444 15%, var(--dark-border) 85%); display: flex; align-items: center; justify-content: center; position: relative;">
-                                        <div style="width: 80px; height: 80px; background: var(--dark-card); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                            <span style="font-size: 20px; font-weight: bold; color: #EF4444;">15%</span>
-                                        </div>
-                                    </div>
-                                    <p style="color: var(--text-secondary); font-size: 12px; margin-top: 10px;">Needs Attention</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Quick Actions for Counselor -->
-                        <div class="chart-card">
-                            <h3>⚡ Quick Actions</h3>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px;">
-                                <button class="quick-action" onclick="reviewPatientNotes()">
-                                    <span style="font-size: 24px; margin-bottom: 8px;">📝</span>
-                                    <span style="font-weight: 600; font-size: 13px;">Review Notes</span>
-                                    <span style="color: var(--text-secondary); font-size: 11px;">Patient journals</span>
-                                </button>
-                                <button class="quick-action" onclick="checkAlerts()">
-                                    <span style="font-size: 24px; margin-bottom: 8px;">⚠️</span>
-                                    <span style="font-weight: 600; font-size: 13px;">Check Alerts</span>
-                                    <span style="color: var(--text-secondary); font-size: 11px;">Emergency cases</span>
-                                </button>
-                                <button class="quick-action" onclick="viewReports()">
-                                    <span style="font-size: 24px; margin-bottom: 8px;">📊</span>
-                                    <span style="font-weight: 600; font-size: 13px;">View Reports</span>
-                                    <span style="color: var(--text-secondary); font-size: 11px;">Progress analytics</span>
-                                </button>
-                                <button class="quick-action" onclick="scheduleFollowup()">
-                                    <span style="font-size: 24px; margin-bottom: 8px;">📅</span>
-                                    <span style="font-weight: 600; font-size: 13px;">Schedule</span>
-                                    <span style="color: var(--text-secondary); font-size: 11px;">Follow-up sessions</span>
-                                </button>
-                            </div>
-                            
-                            <!-- Recent Patient Updates -->
-                            <div style="background: var(--dark-bg); border-radius: 8px; padding: 16px; margin-top: 20px;">
-                                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                                    <div style="background: rgba(217, 70, 239, 0.1); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                        <span>👤</span>
-                                    </div>
-                                    <div>
-                                        <p style="color: var(--text-primary); font-weight: 600; font-size: 13px;">Recent Patient Update</p>
-                                        <p style="color: var(--text-secondary); font-size: 12px;">Alex reported improved sleep (8 hrs)</p>
-                                    </div>
-                                </div>
-                                <button class="save-btn" style="width: 100%; margin-top: 8px; padding: 8px;" onclick="viewPatientDetails()">
-                                    View Details
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
+                <!-- ===== COUNSELOR - SESSION MANAGEMENT ===== -->
+                <div id="counselor-sessions" class="content-section" style="display: none;">
+                    <h2>Session Management</h2>
+                    
+                    <!-- Quick Stats -->
+                    <div class="stats-grid" style="margin-bottom: 24px;">
+                        <div class="stat-card">
+                            <p class="stat-label">Today's Appointments</p>
+                            <p class="stat-value">3</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="stat-label">Pending Follow-ups</p>
+                            <p class="stat-value">5</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="stat-label">Active Patients</p>
+                            <p class="stat-value">9</p>
+                        </div>
+                        <div class="stat-card highlight">
+                            <p class="stat-label">Avg. Session Rating</p>
+                            <p class="stat-value">4.8 ★</p>
+                        </div>
+                    </div>
 
-                        <!-- ===== COUNSELOR - SESSION MANAGEMENT ===== -->
-                        <div id="counselor-sessions" class="content-section" style="display: none;">
-                            <h2>Session Management</h2>
-                            
-                            <!-- Quick Stats -->
-                            <div class="stats-grid" style="margin-bottom: 24px;">
-                                <div class="stat-card">
-                                    <p class="stat-label">Today's Appointments</p>
-                                    <p class="stat-value">3</p>
-                                </div>
-                                <div class="stat-card">
-                                    <p class="stat-label">Pending Follow-ups</p>
-                                    <p class="stat-value">5</p>
-                                </div>
-                                <div class="stat-card">
-                                    <p class="stat-label">Active Patients</p>
-                                    <p class="stat-value">9</p>
-                                </div>
-                                <div class="stat-card highlight">
-                                    <p class="stat-label">Avg. Session Rating</p>
-                                    <p class="stat-value">4.8 ★</p>
-                                </div>
-                            </div>
-
-                            <!-- Quick Actions -->
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
-                                <button class="quick-action" onclick="startNewSession()">
-                                    <span style="font-size: 24px;">🎬</span>
-                                    <span style="font-weight: 600;">Start Session</span>
-                                </button>
-                                <button class="quick-action" onclick="viewPatientProgress()">
-                                    <span style="font-size: 24px;">📈</span>
-                                    <span style="font-weight: 600;">View Progress</span>
-                                </button>
-                                <button class="quick-action" onclick="manageAvailability()">
-                                    <span style="font-size: 24px;">📅</span>
-                                    <span style="font-weight: 600;">Set Availability</span>
-                                </button>
-                                <button class="quick-action" onclick="reviewAlerts()">
-                                    <span style="font-size: 24px;">⚠️</span>
-                                    <span style="font-weight: 600;">Crisis Alerts</span>
-                                </button>
-                            </div>
-
-                            <!-- Single Main Table: Patient Sessions -->
-                            <div class="log-history">
-                                <div class="table-header">
-                                    <div class="table-title">Patient Sessions</div>
-                                    <div class="header-controls">
-                                        <button class="add-btn" onclick="addNewSession()">+ Add Session</button>
-                                        <input type="text" class="search-input" placeholder="Search patients...">
-                                        <select style="background: var(--dark-bg); color: var(--text-primary); border: 1px solid var(--dark-border); padding: 6px 12px; border-radius: 6px; font-size: 12px;">
-                                            <option>All Status</option>
-                                            <option>Scheduled</option>
-                                            <option>Completed</option>
-                                            <option>Cancelled</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Session_ID</th>
-                                            <th>PATIENT</th>
-                                            <th>DATE & TIME</th>
-                                            <th>TYPE</th>
-                                            <th>STATUS</th>
-                                            <th>NOTES</th>
-                                            <th>ACTIONS</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>001</td>
-                                            <td>Alex Johnson</td>
-                                            <td>Today, 10:00 AM</td>
-                                            <td>Video Call</td>
-                                            <td>
-                                                <span class="status-approved" style="background: rgba(16, 185, 129, 0.15); color: #10B981;">Scheduled</span>
-                                            </td>
-                                            <td>Regular check-in</td>
-                                            <td>
-                                                <div class="action-icons">
-                                                    <span class="action-icon" onclick="startSession('S001')" title="Start Session">▶️</span>
-                                                    <span class="action-icon" onclick="addNote('S001')" title="Add Notes">📝</span>
-                                                    <span class="action-icon" onclick="rescheduleSession('S001')" title="Reschedule">🔄</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>002</td>
-                                            <td>Maria Garcia</td>
-                                            <td>Today, 2:00 PM</td>
-                                            <td>In-person</td>
-                                            <td>
-                                                <span style="background: rgba(239, 68, 68, 0.15); color: #EF4444; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Emergency</span>
-                                            </td>
-                                            <td>High anxiety reported</td>
-                                            <td>
-                                                <div class="action-icons">
-                                                    <span class="action-icon" onclick="startSession('S002')" title="Start Session">▶️</span>
-                                                    <span class="action-icon" onclick="viewPatientChart('P002')" title="View Chart">📊</span>
-                                                    <span class="action-icon" onclick="messagePatient('P002')" title="Message">💬</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>003</td>
-                                            <td>Robert Chen</td>
-                                            <td>Tomorrow, 4:30 PM</td>
-                                            <td>Phone Call</td>
-                                            <td>
-                                                <span class="status-pending">Confirmed</span>
-                                            </td>
-                                            <td>Follow-up session</td>
-                                            <td>
-                                                <div class="action-icons">
-                                                    <span class="action-icon" onclick="remindPatient('S003')" title="Send Reminder">🔔</span>
-                                                    <span class="action-icon" onclick="rescheduleSession('S003')" title="Reschedule">🔄</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>004</td>
-                                            <td>Sarah Williams</td>
-                                            <td>2024-11-18, 11:00 AM</td>
-                                            <td>Video Call</td>
-                                            <td>
-                                                <span style="background: rgba(6, 182, 212, 0.15); color: #06B6D4; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Completed</span>
-                                            </td>
-                                            <td>Discussed sleep issues</td>
-                                            <td>
-                                                <div class="action-icons">
-                                                    <span class="action-icon" onclick="viewNotes('S004')" title="View Notes">👁️</span>
-                                                    <span class="action-icon" onclick="downloadReport('S004')" title="Download">📥</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>005</td>
-                                            <td>James Wilson</td>
-                                            <td>2024-11-20, 3:00 PM</td>
-                                            <td>In-person</td>
-                                            <td>
-                                                <span style="background: rgba(156, 163, 175, 0.15); color: #9CA3AF; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Cancelled</span>
-                                            </td>
-                                            <td>Patient rescheduled</td>
-                                            <td>
-                                                <div class="action-icons">
-                                                    <span class="action-icon" onclick="rebookSession('S005')" title="Rebook">📅</span>
-                                                    <span class="action-icon" onclick="archiveSession('S005')" title="Archive">🗄️</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Session Notes Section (Collapsible) -->
-                            <div class="chart-card" style="margin-top: 24px;">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; cursor: pointer;" onclick="toggleNotesSection()">
-                                    <h3>📝 Session Notes & Follow-ups</h3>
-                                    <span id="notes-toggle">▼</span>
-                                </div>
-                                <div id="notes-section" style="display: none;">
-                                    <div style="background: var(--dark-bg); padding: 16px; border-radius: 8px; margin-bottom: 12px;">
-                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                            <span style="color: var(--text-primary); font-weight: 600;">Alex Johnson - Session S001</span>
-                                            <span style="color: var(--text-secondary); font-size: 12px;">Today, 10:00 AM</span>
-                                        </div>
-                                        <p style="color: var(--text-secondary); font-size: 13px;">Patient reported improved sleep patterns. Recommended continuing mindfulness exercises. Follow-up in 2 weeks.</p>
-                                        <textarea placeholder="Add additional notes..." style="width: 100%; margin-top: 12px; padding: 8px; background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 6px; color: var(--text-primary); font-size: 13px;"></textarea>
-                                        <button class="save-btn" style="margin-top: 12px; padding: 6px 12px; font-size: 12px;">Save Notes</button>
-                                    </div>
-                                </div>
+                    <!-- Sessions Table -->
+                    <div class="log-history">
+                        <div class="table-header">
+                            <div class="table-title">Counselor Sessions</div>
+                            <div class="header-controls">
+                                <button class="add-btn" onclick="addNewSession()">+ Add Session</button>
+                                <input type="text" class="search-input" placeholder="Search patients...">
                             </div>
                         </div>
-
-
-
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sessions_ID</th>
+                                    <th>Patient Name</th>
+                                    <th>Date & Time</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Notes</th>
+                                    <th>ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Alex Johnson</td>
+                                    <td>Today, 10:00 AM</td>
+                                    <td>Video Call</td>
+                                    <td>Scheduled</td>
+                                    <td>Regular check-in</td>
+                                    <td>
+                                        <div class="action-icons">
+                                            <span class="action-icon" onclick="startSession('1')" title="Start Session">▶️</span>
+                                            <span class="action-icon" onclick="addNote('1')" title="Add Notes">📝</span>
+                                            <span class="action-icon" onclick="rescheduleSession('1')" title="Reschedule">🔄</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
                 <!-- ===== ADMIN - USER MANAGEMENT ===== -->
                 <div id="user-management" class="content-section">
@@ -1536,20 +1128,22 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>User_ID</th>
-                                <th>NAME</th>
-                                <th>EMAIL</th>
-                                <th>ROLE</th>
-                                <th>STATUS</th>
+                                <th>Patient_ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Age</th>
+                                <th>Gender</th>
+                                <th>Status</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>001</td>
+                                <td>1</td>
                                 <td>John Doe</td>
                                 <td>john@bondhu.app</td>
-                                <td>Patient</td>
+                                <td>25</td>
+                                <td>Male</td>
                                 <td><span class="status-approved">Active</span></td>
                                 <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
                             </tr>
@@ -1570,21 +1164,21 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>counsclors_ID</th>
-                                <th>NAME</th>
-                                <th>SPECIALIZATION</th>
-                                <th>ACTIVE PATIENTS</th>
-                                <th>SESSIONS/WEEK</th>
+                                <th>Counsellor_ID</th>
+                                <th>Name</th>
+                                <th>Specialization</th>
+                                <th>Contact</th>
+                                <th>AvailableDay</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>001</td>
+                                <td>1</td>
                                 <td>Dr. Sarah Johnson</td>
                                 <td>Anxiety & Stress</td>
-                                <td>8</td>
-                                <td>12</td>
+                                <td>01766836209</td>
+                                <td>2024-11-25</td>
                                 <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
                             </tr>
                         </tbody>
@@ -1604,19 +1198,19 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>All_Sessions_ID</th>
-                                <th>DATE</th>
-                                <th>PATIENT</th>
-                                <th>COUNSELOR</th>
-                                <th>STATUS</th>
+                                <th>Sessions_ID</th>
+                                <th>Date</th>
+                                <th>Patient Name</th>
+                                <th>Counselor Name</th>
+                                <th>Status</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>001</td>
+                                <td>1</td>
                                 <td>2024-11-20 10:00</td>
-                                <td>Patient User</td>
+                                <td>John Doe</td>
                                 <td>Dr. Sarah Johnson</td>
                                 <td><span class="status-approved">Completed</span></td>
                                 <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
@@ -1638,20 +1232,20 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>All_Daily_Logs_ID</th>
-                                <th>DATE</th>
-                                <th>PATIENT</th>
-                                <th>MOOD</th>
-                                <th>STRESS</th>
+                                <th>Patient_ID</th>
+                                <th>Timestamp</th>
+                                <th>Patient Name</th>
+                                <th>Mood</th>
+                                <th>StressLevel</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>001</td>
+                                <td>1</td>
                                 <td>2024-11-18 08:00</td>
-                                <td>Patient User</td>
-                                <td>4</td>
+                                <td>John Doe</td>
+                                <td>Happy</td>
                                 <td>2</td>
                                 <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
                             </tr>
@@ -1661,7 +1255,7 @@
 
                 <!-- ===== ADMIN - AI ANALYSIS LOG ===== -->
                 <div id="ai-analysis-log" class="content-section">
-                    <h2>AI Analysis</h2>
+                    <h2>AI Analysis Log</h2>
                     <div class="table-header">
                         <div class="table-title"></div>
                         <div class="header-controls">
@@ -1672,21 +1266,21 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>AI_Analysis_ID</th>
-                                <th>DATE</th>
-                                <th>PATIENT</th>
-                                <th>ANALYSIS TYPE</th>
-                                <th>Risk scores</th>
+                                <th>Analysis_ID</th>
+                                <th>Patient Name</th>
+                                <th>Analysis Date</th>
+                                <th>SentimentScore</th>
+                                <th>RiskScore</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>001</td>
+                                <td>1</td>
+                                <td>John Doe</td>
                                 <td>2024-11-18 09:30</td>
-                                <td>Patient User</td>
-                                <td>Mood Pattern Analysis</td>
-                                <td>82/100</td>
+                                <td>75</td>
+                                <td>25</td>
                                 <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
                             </tr>
                         </tbody>
@@ -1706,17 +1300,17 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Content_Management_ID</th>
-                                <th>TITLE</th>
-                                <th>TYPE</th>
-                                <th>CREATED</th>
-                                <th>STATUS</th>
+                                <th>Content ID</th>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Created</th>
+                                <th>Status</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>001</td>
+                                <td>1</td>
                                 <td>Stress Management Guide</td>
                                 <td>Article</td>
                                 <td>2024-11-15</td>
@@ -1740,19 +1334,19 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Crisis_Log_ID</th>
-                                <th>DATE</th>
-                                <th>PATIENT</th>
-                                <th>SEVERITY</th>
-                                <th>STATUS</th>
+                                <th>Alert_ID</th>
+                                <th>Patient Name</th>
+                                <th>Alert Timestamp</th>
+                                <th>Severity</th>
+                                <th>Status</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>001</td>
+                                <td>1</td>
+                                <td>John Doe</td>
                                 <td>2024-11-18 15:45</td>
-                                <td>Patient User</td>
                                 <td>Medium</td>
                                 <td><span class="status-approved">Resolved</span></td>
                                 <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
@@ -1774,59 +1368,26 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Prescription_ID</th>
-                                <th>PATIENT</th>
-                                <th>MEDICATION</th>
-                                <th>DOSAGE</th>
-                                <th>STATUS</th>
+                                <th>Prescription ID</th>
+                                <th>Patient Name</th>
+                                <th>Medication</th>
+                                <th>Dosage</th>
+                                <th>Status</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>001</td>
-                                <td>Demo User</td>
+                                <td>1</td>
+                                <td>John Doe</td>
                                 <td>Propranolol</td>
                                 <td>10mg</td>
                                 <td><span class="status-approved">Approved</span></td>
                                 <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
                             </tr>
-                            <tr>
-                                <td>002</td>
-                                <td>John Smith</td>
-                                <td>Lexapro</td>
-                                <td>20mg</td>
-                                <td><span class="status-pending">Pending</span></td>
-                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <!-- COUNSELOR DASHBOARD -->
-                <div id="counselor-dashboard" style="display: none;">
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <p class="stat-label">Active Patients</p>
-                            <p class="stat-value">9</p>
-                        </div>
-                        <div class="stat-card">
-                            <p class="stat-label">Today's Appointments</p>
-                            <p class="stat-value">3</p>
-                        </div>
-                        <div class="stat-card">
-                            <p class="stat-label">Emergency Alerts</p>
-                            <p class="stat-value">2</p>
-                        </div>
-                        <div class="stat-card highlight">
-                            <p class="stat-label">Sessions Completed</p>
-                            <p class="stat-value">80%</p>
-                        </div>
-                    </div>
-                </div>
-                                
-
-
 
                 <!-- ===== FINANCE - BILLING DASHBOARD ===== -->
                 <div id="billing-dashboard" class="content-section">
@@ -1852,37 +1413,23 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Billing_ID</th>
-                                <th>DATE</th>
-                                <th>PATIENT</th>
-                                <th>AMOUNT ($)</th>
-                                <th>STATUS</th>
+                                <th>Payment_ID</th>
+                                <th>Patient Name</th>
+                                <th>Amount ($)</th>
+                                <th>PaymentMethod</th>
+                                <th>PaymentDate</th>
+                                <th>Status</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>001</td>
-                                <td>2024-07-22</td>
-                                <td>Demo User</td>
-                                <td>120</td>
-                                <td><span class="status-approved">Paid</span></td>
-                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                            </tr>
-                            <tr>
-                                <td>002</td>
-                                <td>2024-07-21</td>
-                                <td>Jane Smith</td>
-                                <td>120</td>
-                                <td><span class="status-approved">Paid</span></td>
-                                <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
-                            </tr>
-                            <tr>
-                                <td>003</td>
-                                <td>2024-07-19</td>
+                                <td>1</td>
                                 <td>John Doe</td>
                                 <td>120</td>
-                                <td><span class="status-unpaid">Unpaid</span></td>
+                                <td>Credit Card</td>
+                                <td>2024-07-22</td>
+                                <td><span class="status-approved">Paid</span></td>
                                 <td><div class="action-icons"><span class="action-icon">👁️</span><span class="action-icon">✏️</span><span class="action-icon">🗑️</span></div></td>
                             </tr>
                         </tbody>
@@ -1892,9 +1439,350 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- MODAL FOR ADD/EDIT RECORDS -->
+    <div id="crud-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title">Add New Record</h3>
+            <form id="record-form">
+                <div id="form-fields">
+                    <!-- Form fields will be loaded here -->
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-    // ===== AI Analysis Functions =====
+    // ===== DATABASE CRUD FUNCTIONS =====
+    let currentTable = '';
+    let currentAction = 'add';
+    let currentRecordId = null;
+    
+    // Store column information for each table
+    const tableInfo = {};
+
+    // Load table data from database
+    async function loadTableData(tableName) {
+        try {
+            console.log(`Loading table: ${tableName}`);
+            const response = await fetch(`table_crud.php?action=read&table=${tableName}`);
+            const data = await response.json();
+            
+            if (data.success) {
+                // Store column info
+                tableInfo[tableName] = {
+                    columns: data.columns,
+                    autoIncrementColumns: await getAutoIncrementColumns(tableName)
+                };
+                updateTableHTML(tableName, data.columns, data.data);
+                console.log(`Table ${tableName} loaded successfully with ${data.data.length} records`);
+            } else {
+                console.error('Error loading table:', data.message);
+            }
+        } catch (error) {
+            console.error('Error loading table:', error);
+        }
+    }
+
+    // Get auto-increment columns for a table
+    async function getAutoIncrementColumns(tableName) {
+        try {
+            const response = await fetch(`table_crud.php?action=get_auto_increment&table=${tableName}`);
+            const data = await response.json();
+            return data.success ? data.auto_increment_columns : [];
+        } catch (error) {
+            console.error('Error getting auto-increment columns:', error);
+            return [];
+        }
+    }
+
+    // Update table HTML with database data - NEW IMPROVED VERSION
+    function updateTableHTML(tableName, columns, data) {
+        const tableContainer = document.getElementById(`${tableName}-table`);
+        if (!tableContainer) {
+            console.error(`Table container not found: ${tableName}-table`);
+            return;
+        }
+        
+        const tbody = tableContainer.querySelector('tbody');
+        if (!tbody) {
+            console.error(`Table body not found in: ${tableName}-table`);
+            return;
+        }
+        
+        // Clear existing data
+        tbody.innerHTML = '';
+        
+        if (data.length === 0) {
+            const tr = document.createElement('tr');
+            const td = document.createElement('td');
+            td.colSpan = columns.length + 1;
+            td.textContent = 'No data available';
+            td.style.textAlign = 'center';
+            td.style.padding = '20px';
+            td.style.color = '#666';
+            tr.appendChild(td);
+            tbody.appendChild(tr);
+            return;
+        }
+        
+        // Sort data by first column (ID) in descending order to show newest first
+        data.sort((a, b) => {
+            const idA = parseInt(a[columns[0]]) || 0;
+            const idB = parseInt(b[columns[0]]) || 0;
+            return idB - idA;
+        });
+        
+        data.forEach(row => {
+            const tr = document.createElement('tr');
+            
+            columns.forEach(col => {
+                const td = document.createElement('td');
+                td.textContent = row[col] || '';
+                tr.appendChild(td);
+            });
+            
+            // Add action buttons
+            const actionTd = document.createElement('td');
+            const idColumn = columns[0];
+            const idValue = row[idColumn];
+            
+            actionTd.innerHTML = `
+                <div class="action-icons">
+                    <span class="action-icon" onclick="editRecord('${tableName}', '${idColumn}', '${idValue}')" title="Edit">✏️</span>
+                    <span class="action-icon" onclick="deleteRecord('${tableName}', '${idColumn}', '${idValue}')" title="Delete">🗑️</span>
+                </div>
+            `;
+            tr.appendChild(actionTd);
+            
+            tbody.appendChild(tr);
+        });
+        
+        console.log(`Updated table ${tableName} with ${data.length} records`);
+    }
+
+    // Open modal for adding/editing records
+    async function openAddModal(tableName) {
+        currentTable = tableName;
+        currentAction = 'add';
+        currentRecordId = null;
+        
+        document.getElementById('modal-title').textContent = `Add New ${tableName}`;
+        
+        try {
+            // Get column names and auto-increment info
+            const [columnsResponse, autoIncResponse] = await Promise.all([
+                fetch(`table_crud.php?action=get_columns&table=${tableName}`),
+                fetch(`table_crud.php?action=get_auto_increment&table=${tableName}`)
+            ]);
+            
+            const columnsData = await columnsResponse.json();
+            const autoIncData = await autoIncResponse.json();
+            
+            if (columnsData.success) {
+                let formHTML = '';
+                const autoIncrementCols = autoIncData.success ? autoIncData.auto_increment_columns : [];
+                
+                columnsData.columns.forEach(col => {
+                    // Skip auto-increment columns (they'll be auto-generated)
+                    if (autoIncrementCols.includes(col)) {
+                        console.log(`Skipping auto-increment column: ${col}`);
+                        return;
+                    }
+                    
+                    // Skip timestamp fields
+                    if (col.toLowerCase() === 'timestamp' || 
+                        col.toLowerCase().includes('date') || 
+                        col.toLowerCase().includes('time')) {
+                        return;
+                    }
+                    
+                    formHTML += `
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">${col}:</label>
+                        <input type="text" name="${col}" id="${col}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" placeholder="Enter ${col}">
+                    </div>
+                    `;
+                });
+                
+                document.getElementById('form-fields').innerHTML = formHTML;
+                document.getElementById('crud-modal').style.display = 'flex';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    // Edit record
+    async function editRecord(tableName, idColumn, idValue) {
+        currentTable = tableName;
+        currentAction = 'edit';
+        currentRecordId = idValue;
+        
+        document.getElementById('modal-title').textContent = `Edit ${tableName} Record`;
+        
+        try {
+            // Get column names and auto-increment info
+            const [columnsResponse, autoIncResponse, recordResponse] = await Promise.all([
+                fetch(`table_crud.php?action=get_columns&table=${tableName}`),
+                fetch(`table_crud.php?action=get_auto_increment&table=${tableName}`),
+                fetch(`table_crud.php?action=get_record&table=${tableName}&id=${idValue}`)
+            ]);
+            
+            const columnsData = await columnsResponse.json();
+            const autoIncData = await autoIncResponse.json();
+            const recordData = await recordResponse.json();
+            
+            if (columnsData.success) {
+                let formHTML = '';
+                const autoIncrementCols = autoIncData.success ? autoIncData.auto_increment_columns : [];
+                
+                columnsData.columns.forEach(col => {
+                    // Skip auto-increment columns
+                    if (autoIncrementCols.includes(col)) {
+                        return;
+                    }
+                    
+                    formHTML += `
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">${col}:</label>
+                        <input type="text" name="${col}" id="${col}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" placeholder="Enter ${col}">
+                    </div>
+                    `;
+                });
+                
+                document.getElementById('form-fields').innerHTML = formHTML;
+                
+                // Fill form with existing data
+                if (recordData.success && recordData.data.length > 0) {
+                    const record = recordData.data[0];
+                    columnsData.columns.forEach(col => {
+                        const input = document.getElementById(col);
+                        if (input && record[col] !== undefined && !autoIncrementCols.includes(col)) {
+                            input.value = record[col];
+                        }
+                    });
+                }
+                
+                document.getElementById('crud-modal').style.display = 'flex';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    // Save record (add or edit) - IMPROVED VERSION
+    document.getElementById('record-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = this.querySelector('.btn-primary');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Saving...';
+        
+        const formData = new FormData();
+        formData.append('action', currentAction);
+        formData.append('table', currentTable);
+        
+        if (currentAction === 'edit') {
+            formData.append('id', currentRecordId);
+        }
+        
+        // Get all form values
+        const inputs = document.querySelectorAll('#form-fields input, #form-fields textarea, #form-fields select');
+        inputs.forEach(input => {
+            if (input.value.trim() !== '') {
+                formData.append(input.name, input.value);
+            }
+        });
+        
+        console.log(`Saving to table: ${currentTable}, action: ${currentAction}`);
+        
+        try {
+            const response = await fetch('table_crud.php', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                alert('Record saved successfully!');
+                closeModal();
+                // Immediately reload the table data
+                await loadTableData(currentTable);
+                console.log(`Table ${currentTable} reloaded after save`);
+            } else {
+                alert('Error: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error saving record: ' + error.message);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Save';
+        }
+    });
+
+    // Delete record - IMPROVED VERSION
+    async function deleteRecord(tableName, idColumn, idValue) {
+        if (!confirm('Are you sure you want to delete this record?')) {
+            return;
+        }
+        
+        console.log(`Deleting from ${tableName}: ${idColumn} = ${idValue}`);
+        
+        const formData = new FormData();
+        formData.append('action', 'delete');
+        formData.append('table', tableName);
+        formData.append('id', idValue);
+        formData.append('id_column', idColumn);
+        
+        try {
+            const response = await fetch('table_crud.php', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                alert('Record deleted successfully!');
+                // Immediately reload the table data
+                await loadTableData(tableName);
+                console.log(`Table ${tableName} reloaded after delete`);
+            } else {
+                alert('Error: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error deleting record');
+        }
+    }
+
+    // Search table
+    async function searchTable(tableName, searchTerm) {
+        try {
+            const response = await fetch(`table_crud.php?action=search&table=${tableName}&search=${encodeURIComponent(searchTerm)}`);
+            const data = await response.json();
+            
+            if (data.success) {
+                updateTableHTML(tableName, data.columns, data.data);
+            }
+        } catch (error) {
+            console.error('Error searching:', error);
+        }
+    }
+
+    // Close modal
+    function closeModal() {
+        document.getElementById('crud-modal').style.display = 'none';
+        document.getElementById('record-form').reset();
+        currentTable = '';
+        currentRecordId = null;
+    }
+
+    // ===== ORIGINAL FUNCTIONS (UNCHANGED) =====
     function analyzeJournal() {
         const journalText = document.getElementById('journal-entry').value;
         if (!journalText.trim()) {
@@ -1902,21 +1790,12 @@
             return;
         }
         
-        // Simulate AI analysis
         document.getElementById('detected-emotion').textContent = 'Anxious';
         document.getElementById('risk-score').textContent = 'Medium (65/100)';
         document.getElementById('keywords').textContent = 'work, overwhelmed, tired, deadline';
         document.getElementById('ai-insight').textContent = 'Your writing shows work-related anxiety. Consider breaking tasks into smaller steps.';
         
         document.getElementById('ai-results').style.display = 'block';
-        
-        // Log to console (for project demo)
-        console.log('AI Journal Analysis:', {
-            text: journalText,
-            emotion: 'Anxious',
-            riskScore: 65,
-            keywords: ['work', 'overwhelmed', 'tired', 'deadline']
-        });
     }
 
     function askAI() {
@@ -1936,7 +1815,6 @@
         userMsg.style.marginBottom = '10px';
         chatContainer.appendChild(userMsg);
         
-        // Simulate AI response (for demo)
         setTimeout(() => {
             const aiMsg = document.createElement('div');
             aiMsg.className = 'chat-message ai';
@@ -1947,41 +1825,12 @@
             aiMsg.style.marginBottom = '10px';
             chatContainer.appendChild(aiMsg);
             
-            // Scroll to bottom
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }, 1000);
         
-        // Clear input
         document.getElementById('user-question').value = '';
     }
 
-    // ===== Feedback Functions =====
-    let currentRating = 0;
-    
-    function rateSession(rating) {
-        currentRating = rating;
-        const stars = document.querySelectorAll('.star');
-        stars.forEach((star, index) => {
-            if (index < rating) {
-                star.style.color = '#FFD700';
-            } else {
-                star.style.color = '#64748B';
-            }
-        });
-        document.getElementById('rating-value').textContent = rating;
-    }
-
-    function submitFeedback() {
-        const feedback = document.getElementById('session-feedback').value;
-        if (currentRating === 0) {
-            alert('Please rate the session.');
-            return;
-        }
-        alert(`Thank you for your ${currentRating}-star feedback!`);
-        console.log('Feedback submitted:', { rating: currentRating, feedback: feedback });
-    }
-
-    // ===== Crisis Support Functions =====
     function logCrisis(type) {
         const types = {
             'connect_counselor': 'Connected with counselor',
@@ -1989,10 +1838,8 @@
             'coping_tools': 'Coping tools accessed'
         };
         
-        console.log(`Crisis action logged: ${type} - ${types[type]}`);
         alert(`Safety action taken: ${types[type]}`);
         
-        // Show coping tools if that button clicked
         if (type === 'coping_tools') {
             document.getElementById('coping-tools').style.display = 'block';
         }
@@ -2012,10 +1859,8 @@
 
     function exportAlerts() {
         alert('Crisis log exported (simulated for demo)');
-        console.log('Exporting crisis alerts...');
     }
 
-    // ===== Recommendation Functions =====
     function startActivity(type) {
         const activities = {
             'mood': 'Gratitude Journaling',
@@ -2028,141 +1873,223 @@
     function bookCounsellor() {
         alert('Redirecting to counselor booking...');
     }
-    // ===== Counselor Dashboard Functions =====
-function viewTodaySessions() {
-    alert('Showing today\'s counseling sessions');
-    // In a real app, this would filter the sessions table
-}
-
-function addNewSession() {
-    alert('Opening session booking form');
-    // In a real app, this would open a modal/form
-}
-
-function reviewPatientNotes() {
-    alert('Opening patient notes for review');
-}
-
-function checkAlerts() {
-    alert('Showing emergency alerts dashboard');
-}
-
-function viewReports() {
-    alert('Opening progress reports');
-}
-
-function scheduleFollowup() {
-    alert('Opening follow-up scheduling');
-}
-
-function viewPatientDetails() {
-    alert('Showing detailed patient profile');
-}
-// ===== Simplified Counselor Session Management Functions =====
-function startNewSession() {
-    const patient = prompt('Enter patient name for new session:');
-    if (patient) {
-        alert(`Starting new session with ${patient}...`);
-        console.log('New session started with:', patient);
-    }
-}
-
-function addNewSession() {
-    const patient = prompt('Enter patient name:');
-    const date = prompt('Enter date and time:');
-    const type = prompt('Enter session type (Video/In-person/Phone):');
     
-    if (patient && date && type) {
-        alert(`Session added for ${patient} on ${date} (${type})`);
-        console.log('New session added:', { patient, date, type });
+    function navigateTo(sectionId) {
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        
+        document.getElementById(sectionId).classList.add('active');
+        
+        document.querySelectorAll('.nav-item').forEach(nav => {
+            nav.classList.remove('active');
+        });
+        
+        const targetNav = document.querySelector(`[data-page="${sectionId}"]`);
+        if (targetNav) {
+            targetNav.classList.add('active');
+        }
     }
-}
-
-function startSession(sessionId) {
-    alert(`Starting session ${sessionId}...`);
-    console.log('Starting session:', sessionId);
-}
-
-function addNote(sessionId) {
-    const note = prompt(`Add notes for session ${sessionId}:`);
-    if (note) {
-        alert(`Notes added to session ${sessionId}`);
-        console.log('Notes added to', sessionId, ':', note);
-    }
-}
-
-function rescheduleSession(sessionId) {
-    const newDate = prompt(`Enter new date/time for session ${sessionId}:`);
-    if (newDate) {
-        alert(`Session ${sessionId} rescheduled to ${newDate}`);
-        console.log('Session rescheduled:', sessionId, 'to', newDate);
-    }
-}
-
-function viewPatientChart(patientId) {
-    alert(`Viewing progress chart for patient ${patientId}...`);
-}
-
-function messagePatient(patientId) {
-    const message = prompt(`Message to patient ${patientId}:`);
-    if (message) {
-        alert(`Message sent to patient ${patientId}`);
-        console.log('Message sent:', message);
-    }
-}
-
-function remindPatient(sessionId) {
-    alert(`Reminder sent for session ${sessionId}`);
-    console.log('Reminder sent for session:', sessionId);
-}
-
-function viewNotes(sessionId) {
-    alert(`Viewing notes for session ${sessionId}...`);
-}
-
-function downloadReport(sessionId) {
-    alert(`Downloading report for session ${sessionId}...`);
-}
-
-function rebookSession(sessionId) {
-    alert(`Rebooking cancelled session ${sessionId}...`);
-}
-
-function archiveSession(sessionId) {
-    if (confirm(`Archive session ${sessionId}?`)) {
-        alert(`Session ${sessionId} archived`);
-        console.log('Session archived:', sessionId);
-    }
-}
-
-function toggleNotesSection() {
-    const notesSection = document.getElementById('notes-section');
-    const toggleIcon = document.getElementById('notes-toggle');
     
-    if (notesSection.style.display === 'none') {
-        notesSection.style.display = 'block';
-        toggleIcon.textContent = '▲';
-    } else {
-        notesSection.style.display = 'none';
-        toggleIcon.textContent = '▼';
+    function logToday() {
+        navigateTo('daily-log');
     }
-}
-
-// Keep these functions from before (they're still useful)
-function viewPatientProgress() {
-    alert('Opening patient progress reports...');
-}
-
-function manageAvailability() {
-    const dates = prompt('Enter your available dates (e.g., Mon-Fri 9AM-5PM):', 'Monday-Friday, 9:00 AM - 5:00 PM');
-    if (dates) {
-        alert('Availability updated!');
+    
+    function addNewSession() {
+        alert('Adding new session...');
     }
-}
+    
+    function startSession(sessionId) {
+        alert(`Starting session ${sessionId}...`);
+    }
+    
+    function addNote(sessionId) {
+        alert(`Adding note to session ${sessionId}...`);
+    }
+    
+    function rescheduleSession(sessionId) {
+        alert(`Rescheduling session ${sessionId}...`);
+    }
 
-function reviewAlerts() {
-    alert('Opening crisis alerts dashboard...');
-}
-</script>
+    // ===== LOGIN FUNCTIONS (UNCHANGED) =====
+    document.addEventListener('DOMContentLoaded', function() {
+        const roleButtons = document.querySelectorAll('.role-btn');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginForm = document.getElementById('login-form');
+        const loginBtnText = document.getElementById('login-btn-text');
+        
+        const roleCredentials = {
+            'patient': { email: 'patient@bondhu.com', password: '123456' },
+            'counselor': { email: 'counselor@bondhu.com', password: '123456' },
+            'admin': { email: 'admin@bondhu.com', password: '123456' },
+            'pharmacist': { email: 'pharmacist@bondhu.com', password: '123456' },
+            'finance': { email: 'finance@bondhu.com', password: '123456' }
+        };
+        
+        if (roleButtons.length > 0) {
+            roleButtons[0].classList.add('active');
+            autoFillCredentials('patient');
+        }
+        
+        roleButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                roleButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const role = this.dataset.role;
+                autoFillCredentials(role);
+            });
+        });
+        
+        function autoFillCredentials(role) {
+            if (roleCredentials[role]) {
+                emailInput.value = roleCredentials[role].email;
+                passwordInput.value = roleCredentials[role].password;
+                loginBtnText.textContent = `Sign in as ${role.toUpperCase()}`;
+            }
+        }
+        
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            
+            const activeRoleBtn = document.querySelector('.role-btn.active');
+            const role = activeRoleBtn ? activeRoleBtn.dataset.role : 'patient';
+            
+            let isValid = false;
+            for (const [r, creds] of Object.entries(roleCredentials)) {
+                if (email === creds.email && password === creds.password) {
+                    isValid = true;
+                    break;
+                }
+            }
+            
+            if (isValid) {
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('dashboard-page').style.display = 'block';
+                
+                const username = email.split('@')[0];
+                document.getElementById('user-greeting').textContent = `Welcome, ${username}`;
+                
+                showUserFeatures(role);
+                showDashboard(role);
+                
+                // Load all table data after login
+                setTimeout(() => {
+                    const tables = ['patient', 'dailylogs', 'aianalysis', 'counsellors', 'sessions', 'feedback', 
+                                   'payment', 'recommendations', 'progess_metrics', 'crisisalerts', 
+                                   'caregiver', 'emergencysosteam', 'patient_preference'];
+                    
+                    console.log('Loading tables after login...');
+                    tables.forEach(table => {
+                        loadTableData(table);
+                    });
+                }, 100);
+            } else {
+                alert('Invalid credentials. Use the auto-fill buttons for demo access.');
+            }
+        });
+        
+        // Navigation
+        const navItems = document.querySelectorAll('.nav-item');
+        const contentSections = document.querySelectorAll('.content-section');
+        
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const targetPage = this.dataset.page;
+                
+                navItems.forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+                
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(targetPage).classList.add('active');
+            });
+        });
+        
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', logout);
+        document.getElementById('logout-btn-sidebar').addEventListener('click', logout);
+        
+        function logout() {
+            document.getElementById('dashboard-page').style.display = 'none';
+            document.getElementById('login-page').style.display = 'block';
+            
+            emailInput.value = '';
+            passwordInput.value = '';
+            
+            roleButtons.forEach(b => b.classList.remove('active'));
+            if (roleButtons.length > 0) {
+                roleButtons[0].classList.add('active');
+                autoFillCredentials('patient');
+            }
+        }
+        
+        function showUserFeatures(userType) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.style.display = 'none';
+            });
+            
+            const dashboardBtn = document.querySelector('[data-page="dashboard"]');
+            if (dashboardBtn) {
+                dashboardBtn.style.display = 'flex';
+                dashboardBtn.classList.add('active');
+            }
+            
+            document.getElementById('logout-btn-sidebar').style.display = 'block';
+            
+            const features = {
+                'patient': [
+                    'daily-log', 'ai-analysis', 'recommendations',
+                    'counseling', 'progress', 'pharmacy', 'crisis-support'
+                ],
+                'counselor': ['counselor-sessions'],
+                'admin': [
+                    'user-management', 'manage-counselors', 'all-sessions',
+                    'all-daily-logs', 'ai-analysis-log', 'content', 'crisis-log'
+                ],
+                'pharmacist': ['prescription-queue'],
+                'finance': ['billing-dashboard']
+            };
+            
+            if (features[userType]) {
+                features[userType].forEach(feature => {
+                    const btn = document.querySelector(`[data-page="${feature}"]`);
+                    if (btn) btn.style.display = 'flex';
+                });
+            }
+        }
+        
+        function showDashboard(userType) {
+            document.getElementById('patient-dashboard').style.display = 'none';
+            document.getElementById('admin-dashboard').style.display = 'none';
+            document.getElementById('pharmacist-dashboard').style.display = 'none';
+            document.getElementById('finance-dashboard').style.display = 'none';
+            document.getElementById('counselor-dashboard').style.display = 'none';
+            
+            switch(userType) {
+                case 'patient':
+                    document.getElementById('patient-dashboard').style.display = 'block';
+                    break;
+                case 'admin':
+                    document.getElementById('admin-dashboard').style.display = 'block';
+                    break;
+                case 'pharmacist':
+                    document.getElementById('pharmacist-dashboard').style.display = 'block';
+                    break;
+                case 'finance':
+                    document.getElementById('finance-dashboard').style.display = 'block';
+                    break;
+                case 'counselor':
+                    document.getElementById('counselor-dashboard').style.display = 'block';
+                    break;
+            }
+        }
+    });
+    </script>
 </body>
 </html>
